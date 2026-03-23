@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheBrickBook — Job Tracking & Invoices for Small Business</title>
+  <meta name="description" content="Track jobs, log hours, manage expenses, and send professional invoices — all from one app. Built for small business owners.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="shortcut icon" href="assets/favicon.png">
+  <link rel="canonical" href="https://thebrickbook.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="TheBrickBook — Job Tracking & Invoices for Small Business">
+  <meta property="og:description" content="Track jobs, log hours, manage expenses, and send professional invoices — all from one app.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thebrickbook.com">
+  <meta property="og:image" content="https://thebrickbook.com/assets/icon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-warm: #faf8f5;
+      --surface: #f3f0eb;
+      --surface-border: #e0dbd3;
+      --orange: #d35400;
+      --orange-light: #e67e22;
+      --orange-bg: rgba(211, 84, 0, 0.08);
+      --green: #1e8449;
+      --text: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #888888;
+      --phone-bg: #ffffff;
+      --phone-surface: #f5f3ef;
+      --phone-border: #e0dbd3;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+    }
+
+    .nav-logo span {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--orange) !important;
+      color: #fff !important;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(211, 84, 0, 0.25);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 32px 80px;
+      background: var(--bg);
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content { max-width: 540px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--orange-bg);
+      border: 1px solid rgba(211, 84, 0, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 84px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+
+    h1 .accent { color: var(--orange); }
+
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      max-width: 440px;
+      font-weight: 500;
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(211, 84, 0, 0.25);
+    }
+
+    .btn-primary svg { width: 20px; height: 20px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 28px;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 2px solid var(--surface-border);
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-muted);
+      color: var(--text);
+    }
+
+    /* ─── Phone mockup (stays dark — it's the app) ─── */
+    .hero-phone {
+      display: flex;
+      justify-content: center;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 280px;
+      height: 580px;
+      background: var(--phone-bg);
+      border-radius: 40px;
+      border: 4px solid #333;
+      overflow: hidden;
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.15),
+        0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #333;
+      border-radius: 0 0 18px 18px;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--phone-bg);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 16px 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ─── Phone internals (matches real app) ─── */
+    .app-search {
+      background: var(--phone-surface);
+      border: 1px solid var(--phone-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .app-search-icon {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .app-search-text {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .app-filters {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .app-chip {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      background: var(--phone-surface);
+      border: 1px solid var(--phone-border);
+      color: var(--text-muted);
+    }
+
+    .app-chip.active {
+      background: rgba(211, 84, 0, 0.1);
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .app-job {
+      background: var(--phone-surface);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: 1px solid var(--phone-border);
+    }
+
+    .app-job-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .app-job-client {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .app-badge {
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .app-badge.progress { background: rgba(211, 84, 0, 0.12); color: var(--orange); }
+    .app-badge.completed { background: rgba(30, 132, 73, 0.12); color: #1e8449; }
+    .app-badge.invoiced { background: rgba(142, 68, 173, 0.12); color: #8e44ad; }
+    .app-badge.quoted { background: rgba(41, 128, 185, 0.12); color: #2980b9; }
+    .app-badge.paid { background: rgba(39, 174, 96, 0.12); color: #27ae60; }
+
+    .app-job-type {
+      font-size: 10px;
+      color: var(--orange);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .app-job-location {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .app-job-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 6px;
+      border-top: 1px solid var(--phone-border);
+    }
+
+    .app-job-time {
+      font-size: 9px;
+      color: var(--text-secondary);
+    }
+
+    .app-job-time.running {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .app-job-quote {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1e8449;
+    }
+
+    .app-job-date {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    /* FAB */
+    .app-fab {
+      position: absolute;
+      bottom: 56px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      font-weight: 300;
+      box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
+    }
+
+    /* Tab bar */
+    .app-tabs {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: var(--phone-bg);
+      border-top: 1px solid var(--phone-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .app-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .app-tab-icon {
+      font-size: 16px;
+    }
+
+    .app-tab-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .app-tab.active .app-tab-icon,
+    .app-tab.active .app-tab-label {
+      color: var(--orange);
+    }
+
+    .app-tab:not(.active) .app-tab-icon,
+    .app-tab:not(.active) .app-tab-label {
+      color: var(--text-muted);
+    }
+
+    /* ─── Features ─── */
+    .features {
+      padding: 100px 32px;
+      background: var(--bg-warm);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 4px;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5vw, 52px);
+      letter-spacing: 2px;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 36px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .feature-icon.jobs { background: rgba(52, 152, 219, 0.12); }
+    .feature-icon.timer { background: rgba(211, 84, 0, 0.1); }
+    .feature-icon.invoice { background: rgba(30, 132, 73, 0.1); }
+    .feature-icon.profit { background: rgba(155, 89, 182, 0.1); }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* ─── How it works ─── */
+    .workflow {
+      padding: 100px 32px;
+      background: var(--bg);
+    }
+
+    .workflow-steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+
+    .workflow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
+      max-width: 180px;
+      position: relative;
+    }
+
+    .workflow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      right: -20%;
+      width: 40%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--surface-border));
+    }
+
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--orange);
+      background: var(--bg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .step-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .step-badge.quoted { background: rgba(52, 152, 219, 0.15); color: #2980b9; }
+    .step-badge.progress { background: rgba(211, 84, 0, 0.12); color: var(--orange); }
+    .step-badge.completed { background: rgba(30, 132, 73, 0.12); color: var(--green); }
+    .step-badge.invoiced { background: rgba(155, 89, 182, 0.12); color: #8e44ad; }
+    .step-badge.paid { background: rgba(39, 174, 96, 0.12); color: #27ae60; }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      padding: 100px 32px;
+      text-align: center;
+      background: var(--text);
+      color: #fff;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6vw, 68px);
+      letter-spacing: 3px;
+      line-height: 1;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .cta-title .accent { color: var(--orange-light); }
+
+    .cta-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      max-width: 460px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .cta-section .btn-primary {
+      background: var(--orange-light);
+    }
+
+    .cta-section .btn-primary:hover {
+      box-shadow: 0 8px 24px rgba(230, 126, 34, 0.35);
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 40px 32px;
+      border-top: 1px solid var(--surface-border);
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-aus {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta):not(.nav-support) { display: none; }
+
+      .hero { padding: 90px 20px 60px; min-height: auto; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .hero-content { max-width: 100%; }
+      .hero-sub { max-width: 100%; margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+
+      .hero-phone { order: 2; }
+
+      .phone-frame {
+        width: 220px;
+        height: 460px;
+      }
+
+      .features { padding: 60px 20px; }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .feature-card { padding: 28px; }
+
+      .workflow { padding: 60px 20px; }
+
+      .workflow-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .workflow-step:not(:last-child)::after { display: none; }
+
+      .cta-section { padding: 60px 20px; }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="assets/icon.png" alt="TheBrickBook">
+      <span>THEBRICKBOOK</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it Works</a>
+      <a href="support.html" class="nav-support">Support</a>
+      <a href="#download" class="nav-cta">Download</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">Free on the App Store</div>
+        <h1>JOB TRACKING<br>& INVOICES<br>FOR <span class="accent">SMALL BUSINESS</span></h1>
+        <p class="hero-sub">Track jobs, log hours, manage expenses, and send professional invoices — all from one app. Built for small business owners.</p>
+        <div class="hero-actions">
+          <a href="https://apps.apple.com/app/thebrickbook" class="btn-primary" id="download">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download for iOS
+          </a>
+          <a href="#features" class="btn-secondary">See Features ↓</a>
+        </div>
+      </div>
+
+      <div class="hero-phone">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <!-- Search bar -->
+            <div class="app-search">
+              <span class="app-search-icon">🔍</span>
+              <span class="app-search-text">Search jobs...</span>
+            </div>
+
+            <!-- Filter chips -->
+            <div class="app-filters">
+              <span class="app-chip active">All</span>
+              <span class="app-chip">Quoted</span>
+              <span class="app-chip">In Progress</span>
+              <span class="app-chip">Completed</span>
+            </div>
+
+            <!-- Job cards -->
+            <div class="app-job">
+              <div class="app-job-top">
+                <span class="app-job-client">J. Smith</span>
+                <span class="app-badge progress">In Progress</span>
+              </div>
+              <div class="app-job-type">Lawn Care, Hedging</div>
+              <div class="app-job-location">12 Main St, Forbes</div>
+              <div class="app-job-footer">
+                <span class="app-job-time running" id="live-timer">⏱ 01:23:45</span>
+                <span class="app-job-quote">$2,400</span>
+                <span class="app-job-date">Today</span>
+              </div>
+            </div>
+
+            <div class="app-job">
+              <div class="app-job-top">
+                <span class="app-job-client">D. Johnson</span>
+                <span class="app-badge completed">Completed</span>
+              </div>
+              <div class="app-job-type">Graphic Design</div>
+              <div class="app-job-location">45 Oak Ave, Parkes</div>
+              <div class="app-job-footer">
+                <span class="app-job-time">06:30:00</span>
+                <span class="app-job-quote">$3,800</span>
+                <span class="app-job-date">Yesterday</span>
+              </div>
+            </div>
+
+            <div class="app-job">
+              <div class="app-job-top">
+                <span class="app-job-client">K. Lee</span>
+                <span class="app-badge invoiced">Invoiced</span>
+              </div>
+              <div class="app-job-type">Photography</div>
+              <div class="app-job-location">8 River Rd, Forbes</div>
+              <div class="app-job-footer">
+                <span class="app-job-time">08:15:00</span>
+                <span class="app-job-quote">$4,200</span>
+                <span class="app-job-date">20 Mar</span>
+              </div>
+            </div>
+
+            <div class="app-job">
+              <div class="app-job-top">
+                <span class="app-job-client">M. Williams</span>
+                <span class="app-badge paid">Paid</span>
+              </div>
+              <div class="app-job-type">Cleaning</div>
+              <div class="app-job-footer">
+                <span class="app-job-time">03:45:00</span>
+                <span class="app-job-quote">$1,850</span>
+                <span class="app-job-date">18 Mar</span>
+              </div>
+            </div>
+
+            <!-- FAB -->
+            <div class="app-fab">+</div>
+
+            <!-- Tab bar -->
+            <div class="app-tabs">
+              <div class="app-tab active">
+                <span class="app-tab-icon">🔨</span>
+                <span class="app-tab-label">Jobs</span>
+              </div>
+              <div class="app-tab">
+                <span class="app-tab-icon">💰</span>
+                <span class="app-tab-label">Money</span>
+              </div>
+              <div class="app-tab">
+                <span class="app-tab-icon">📊</span>
+                <span class="app-tab-label">Dashboard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <p class="section-label reveal">FEATURES</p>
+      <h2 class="section-title reveal">EVERYTHING YOU NEED.<br>NOTHING YOU DON'T.</h2>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon jobs">📋</div>
+          <h3 class="feature-title">TRACK EVERY JOB</h3>
+          <p class="feature-desc">From quote to payment. Know where every job stands with a simple workflow: Quoted → In Progress → Completed → Invoiced → Paid.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon timer">⏱</div>
+          <h3 class="feature-title">BUILT-IN TIMER</h3>
+          <p class="feature-desc">Start when you arrive, stop when you leave. See your actual hourly rate before you send the invoice. No more guessing.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon invoice">📄</div>
+          <h3 class="feature-title">INVOICES IN SECONDS</h3>
+          <p class="feature-desc">Generate clean PDFs with your ABN, GST, and bank details. Share via text, email, or AirDrop. Three professional templates included.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon profit">📊</div>
+          <h3 class="feature-title">KNOW YOUR REAL PROFIT</h3>
+          <p class="feature-desc">Track expenses, see GST summaries, and know what you're actually earning — not just what hits your account.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section class="workflow" id="how-it-works">
+    <div class="section-inner" style="text-align: center;">
+      <p class="section-label reveal">HOW IT WORKS</p>
+      <h2 class="section-title reveal">QUOTE TO PAYMENT<br>IN <span class="accent">5 STEPS</span></h2>
+
+      <div class="workflow-steps reveal">
+        <div class="workflow-step">
+          <div class="step-circle">1</div>
+          <div class="step-name">QUOTE</div>
+          <span class="step-badge quoted">Quoted</span>
+        </div>
+        <div class="workflow-step">
+          <div class="step-circle">2</div>
+          <div class="step-name">START</div>
+          <span class="step-badge progress">In Progress</span>
+        </div>
+        <div class="workflow-step">
+          <div class="step-circle">3</div>
+          <div class="step-name">COMPLETE</div>
+          <span class="step-badge completed">Completed</span>
+        </div>
+        <div class="workflow-step">
+          <div class="step-circle">4</div>
+          <div class="step-name">INVOICE</div>
+          <span class="step-badge invoiced">Invoiced</span>
+        </div>
+        <div class="workflow-step">
+          <div class="step-circle">5</div>
+          <div class="step-name">GET PAID</div>
+          <span class="step-badge paid">Paid</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div>
+      <h2 class="cta-title reveal">STOP CHASING PAPERWORK.<br><span class="accent">START EARNING.</span></h2>
+      <p class="cta-sub reveal">Download TheBrickBook and take control of your business today.</p>
+      <div class="reveal">
+        <a href="#" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Download for iOS
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="support.html">Support</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 TheBrickBook</div>
+      <div class="footer-aus">Made in Australia</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Animate timer in phone mockup
+    const timerEl = document.getElementById('live-timer');
+    if (timerEl) {
+      let secs = 5025; // 01:23:45
+      setInterval(() => {
+        secs++;
+        const h = String(Math.floor(secs / 3600)).padStart(2, '0');
+        const m = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
+        const s = String(secs % 60).padStart(2, '0');
+        timerEl.textContent = `⏱ ${h}:${m}:${s}`;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
