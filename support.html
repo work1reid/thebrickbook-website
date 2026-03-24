@@ -161,7 +161,7 @@
 
     <div class="form-card">
       <h2>SEND A MESSAGE</h2>
-      <form id="contact-form" action="https://formspree.io/f/placeholder" method="POST">
+      <form id="contact-form" action="https://formspree.io/f/xkoqdzlj" method="POST">
         <div class="form-group">
           <label class="form-label" for="name">Your Name</label>
           <input type="text" name="name" id="name" class="form-input" placeholder="e.g. John Smith" required>
@@ -221,16 +221,19 @@
       btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
     });
     const form = document.getElementById('contact-form');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = form.querySelector('#name').value;
-      const email = form.querySelector('#email').value;
-      const msg = form.querySelector('#message').value;
-      const subject = encodeURIComponent('TheBrickBook Support: ' + name);
-      const body = encodeURIComponent('From: ' + name + '\nEmail: ' + email + '\n\n' + msg);
-      window.location.href = 'mailto:work1reid@gmail.com?subject=' + subject + '&body=' + body;
-      form.style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          alert('Something went wrong. Please email us directly at work1reid@gmail.com');
+        }
+      } catch {
+        alert('Something went wrong. Please email us directly at work1reid@gmail.com');
+      }
     });
   </script>
 </body>
