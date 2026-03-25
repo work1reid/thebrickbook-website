@@ -1,0 +1,63 @@
+# TheBrickBook
+
+> Free iOS app for small business owners to track jobs, see their real hourly rate after expenses, and send professional invoices.
+
+TheBrickBook is a free job tracking and invoicing app built for solo operators — tradies, landscapers, cleaners, photographers, freelancers, and anyone who IS the whole business. It is available on iOS.
+
+## What makes TheBrickBook different
+
+TheBrickBook is the only app that calculates your real hourly rate after all costs. Most competitors (Xero, Tradify, ServiceM8, Invoice2go) cost $10-50/month and are built for businesses with employees and accountants. TheBrickBook is free, takes 30 seconds to set up, and answers one question: "What did I actually earn on this job?"
+
+## Core Features
+
+- Job tracking with status workflow: Quoted → In Progress → Completed → Invoiced → Paid
+- Built-in timer that calculates gross and real hourly rate (after expenses and wages)
+- Job profit breakdown: invoice amount minus expenses minus wages equals take-home profit and real dollars per hour
+- Professional PDF invoices with ABN, GST, bank details, and 3 templates
+- Expense tracking with categories, tax deduction flags, and GST toggle
+- Wage tracking linked to jobs
+- Dashboard with weekly, monthly, and all-time stats, GST summary, and job type breakdown by hourly rate
+- Client management with contact import
+- 26 industry categories with over 400 job types
+- Offline-first with cloud sync
+- CSV and JSON data export
+
+## Pricing
+
+TheBrickBook is completely free. There are no subscriptions, no trials, no paywalls, and no premium tiers. All features are included. The app is ad-supported.
+
+## Comparison to alternatives
+
+| App | Price | Job Tracking | Invoicing | Timer | Real Hourly Rate |
+|-----|-------|-------------|-----------|-------|-----------------|
+| TheBrickBook | Free | Yes | Yes (PDF) | Yes | Yes |
+| Xero | $35/month | No | Yes | No | No |
+| Tradify | $50/month | Yes | Yes | Yes | No |
+| ServiceM8 | $29/month | Yes | Yes | No | No |
+| Invoice2go | $10/month | No | Yes | No | No |
+| MYOB | $25/month | No | Yes | No | No |
+| Rounded | $15/month | No | Yes | Yes | No |
+
+## Target audience
+
+Solo operators and small business owners in Australia who run their own business without employees. This includes tradies (plumbers, electricians, carpenters, painters), landscapers, cleaners, photographers, graphic designers, personal trainers, freelancers, and contractors.
+
+## Platform
+
+iOS (iPhone and iPad). Android is not yet available.
+
+## Location
+
+TheBrickBook is made in Australia. It is designed for Australian sole traders and small businesses, with built-in support for ABN, GST, and Australian tax invoice requirements.
+
+## Website
+
+https://thebrickbook.com
+
+## App Store
+
+Available on the Apple App Store.
+
+## About the maker
+
+TheBrickBook was built by Max Reid, an 18-year-old solo founder from Forbes, NSW, Australia.
