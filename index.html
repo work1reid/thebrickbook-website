@@ -3,23 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TheBrickBook — Know What You Actually Earn Per Job</title>
-  <meta name="description" content="Most small businesses guess their hourly rate. TheBrickBook shows it after expenses and wages. Free job tracking and invoices.">
+  <title>TheBrickBook — Free Job Tracker & Invoice App for Tradies & Solo Operators</title>
+  <meta name="description" content="Free iOS app that shows your real hourly rate after expenses and wages. Track jobs, send ABN invoices, and see actual profit per job. Built for tradies, cleaners, landscapers, and freelancers in Australia.">
+  <meta name="keywords" content="job tracker app, free invoice app australia, tradie app, real hourly rate calculator, ABN invoice generator, small business job tracking, profit tracker, sole trader app, freelancer invoice app, GST invoice app">
   <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="index, follow">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="shortcut icon" href="assets/favicon.png">
   <link rel="canonical" href="https://thebrickbook.com/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="TheBrickBook — Know What You Actually Earn Per Job">
-  <meta property="og:description" content="Track jobs, log hours, manage expenses, and send professional invoices — all from one app.">
+  <meta property="og:title" content="TheBrickBook — Free Job Tracker & Invoice App for Tradies">
+  <meta property="og:description" content="Know what you actually earn per job. Free app to track jobs, log hours, manage expenses, and send professional ABN invoices.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thebrickbook.com">
   <meta property="og:image" content="https://thebrickbook.com/assets/icon.png">
+  <meta property="og:site_name" content="TheBrickBook">
+  <meta property="og:locale" content="en_AU">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TheBrickBook — Free Job Tracker & Invoice App">
+  <meta name="twitter:description" content="Know what you actually earn per job. Free app for tradies, freelancers, and solo operators.">
+  <meta name="twitter:image" content="https://thebrickbook.com/assets/icon.png">
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TheBrickBook",
+    "operatingSystem": "iOS",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "AUD"
+    },
+    "description": "Free job tracking and invoice app that shows your real hourly rate after expenses and wages. Built for tradies, freelancers, and solo operators in Australia.",
+    "url": "https://thebrickbook.com",
+    "author": {
+      "@type": "Organization",
+      "name": "TheBrickBook",
+      "url": "https://thebrickbook.com"
+    },
+    "featureList": "Job tracking, Built-in timer, PDF invoices with ABN and GST, Expense tracking, Real hourly rate calculator, Dashboard analytics, Client management, Offline-first with cloud sync"
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is TheBrickBook really free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, TheBrickBook is completely free to download and use. There are no subscriptions, no trials, and no hidden fees. All features including job tracking, invoicing, and profit reports are included."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does TheBrickBook calculate my real hourly rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TheBrickBook takes your invoice amount, subtracts all expenses and wages for that job, then divides by the hours you tracked with the built-in timer. The result is your real take-home hourly rate — what you actually earned, not just what the client paid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I create invoices with my ABN and GST?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. TheBrickBook generates professional PDF invoices that include your ABN, GST amounts, bank details, and business information. Choose from three templates and share via email, text, or AirDrop."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What types of businesses is TheBrickBook for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TheBrickBook is built for solo operators and small business owners — tradies, landscapers, cleaners, photographers, graphic designers, personal trainers, freelancers, and anyone who is the whole business. It covers 26 industry categories with over 400 job types."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work offline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. TheBrickBook is offline-first, so you can track jobs, log expenses, and create invoices even without internet. Your data syncs automatically when you're back online."
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -638,6 +723,63 @@
     .step-badge.invoiced { background: rgba(155, 89, 182, 0.12); color: #8e44ad; }
     .step-badge.paid { background: rgba(39, 174, 96, 0.12); color: #27ae60; }
 
+    /* ─── FAQ ─── */
+    .faq {
+      padding: 100px 32px;
+      background: var(--bg-warm);
+    }
+
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .faq-question::-webkit-details-marker { display: none; }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--orange);
+      transition: transform 0.2s;
+    }
+
+    details[open] .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      padding: 0 24px 20px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .faq { padding: 60px 20px; }
+    }
+
     /* ─── CTA ─── */
     .cta-section {
       padding: 100px 32px;
@@ -808,6 +950,7 @@
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#how-it-works">How it Works</a>
+      <a href="blog/">Blog</a>
       <a href="#download" class="nav-cta">Download</a>
     </div>
   </nav>
@@ -820,11 +963,11 @@
         <p class="hero-sub">Most small businesses guess their hourly rate. TheBrickBook shows it after expenses and wages.</p>
         <p class="hero-example">$1,200 job → $420 profit → $28/hour</p>
         <div class="hero-actions">
-          <a href="https://apps.apple.com/app/thebrickbook" class="btn-primary" id="download">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <a href="https://apps.apple.com/app/thebrickbook" class="btn-primary" id="download" aria-label="Download TheBrickBook free on the App Store">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
             Start Free — Takes 30 Seconds
           </a>
-          <a href="#features" class="btn-secondary">See How It Works ↓</a>
+          <a href="#features" class="btn-secondary" aria-label="See how TheBrickBook works">See How It Works ↓</a>
         </div>
       </div>
 
@@ -996,6 +1139,46 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="section-inner">
+      <p class="section-label reveal">FAQ</p>
+      <h2 class="section-title reveal">COMMON QUESTIONS</h2>
+
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary class="faq-question">Is TheBrickBook really free?</summary>
+          <p class="faq-answer">Yes, TheBrickBook is completely free to download and use. There are no subscriptions, no trials, and no hidden fees. All features including job tracking, invoicing, expense management, and profit reports are included from day one.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary class="faq-question">How does TheBrickBook calculate my real hourly rate?</summary>
+          <p class="faq-answer">TheBrickBook takes your invoice amount, subtracts all expenses and wages for that job, then divides by the hours you tracked with the built-in timer. For example, a $1,200 job with $480 in expenses and 6 hours tracked gives you a real hourly rate of $120/hr — not the $200/hr you might think you're earning. Most tradies and freelancers are surprised by their actual number.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary class="faq-question">Can I create invoices with my ABN and GST?</summary>
+          <p class="faq-answer">Yes. TheBrickBook generates professional PDF invoices that include your ABN, GST amounts, bank details, and business information. Choose from three templates and share via email, text, or AirDrop. Perfect for sole traders and small businesses that need to send tax invoices to clients.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary class="faq-question">What types of businesses is TheBrickBook for?</summary>
+          <p class="faq-answer">TheBrickBook is built for solo operators and small business owners — tradies, landscapers, cleaners, photographers, graphic designers, personal trainers, freelancers, and anyone who runs their own show. It covers 26 industry categories with over 400 job types. If you're the kind of person who IS the whole business, this app is for you.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary class="faq-question">Does it work offline?</summary>
+          <p class="faq-answer">Yes. TheBrickBook is offline-first, so you can track jobs, log expenses, and create invoices even without internet — handy when you're on a job site with no signal. Your data syncs automatically when you're back online.</p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary class="faq-question">How is this different from Xero or MYOB?</summary>
+          <p class="faq-answer">Xero, MYOB, and Tradify are powerful but they cost $35-50/month and are built for businesses with accountants and staff. TheBrickBook is free, takes 30 seconds to set up, and focuses on one thing: helping you see what you actually earn per job. No accounting degree required.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="cta-section">
     <div>
@@ -1014,6 +1197,7 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-links">
+        <a href="blog/">Blog</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="support.html">Support</a>
         <a href="terms.html">Terms</a>
