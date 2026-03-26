@@ -14,6 +14,7 @@
       --bg: #080E1A;
       --bg-card: #0D1526;
       --bg-input: #111B2E;
+      --bg-hover: #141F35;
       --border: #1E293B;
       --border-hover: #334155;
       --orange: #d35400;
@@ -29,10 +30,12 @@
       --amber-bg: rgba(245, 158, 11, 0.12);
       --purple: #8B5CF6;
       --purple-bg: rgba(139, 92, 246, 0.12);
+      --cyan: #06B6D4;
+      --cyan-bg: rgba(6, 182, 212, 0.12);
       --text: #F1F5F9;
       --text-secondary: #94A3B8;
       --text-muted: #64748B;
-      --sidebar-w: 200px;
+      --sidebar-w: 220px;
     }
 
     body {
@@ -49,7 +52,7 @@
       width: var(--sidebar-w);
       background: var(--bg-card);
       border-right: 1px solid var(--border);
-      padding: 20px 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -57,18 +60,18 @@
       left: 0;
       bottom: 0;
       z-index: 50;
+      overflow-y: auto;
     }
 
     .sidebar-brand {
-      padding: 0 20px 20px;
+      padding: 20px 20px 16px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 12px;
     }
 
     .sidebar-brand h1 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       color: var(--orange);
     }
 
@@ -79,7 +82,7 @@
     }
 
     .nav-section {
-      padding: 8px 12px 4px;
+      padding: 16px 20px 6px;
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -91,7 +94,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 20px;
+      padding: 9px 20px;
       color: var(--text-secondary);
       font-size: 13px;
       font-weight: 500;
@@ -103,9 +106,9 @@
       text-align: left;
     }
 
-    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
     .nav-item.active { color: var(--orange); background: var(--orange-bg); border-right: 2px solid var(--orange); }
-    .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
 
     .sidebar-footer {
       margin-top: auto;
@@ -113,72 +116,72 @@
       border-top: 1px solid var(--border);
     }
 
-    .sidebar-footer .user-email {
-      font-size: 11px;
-      color: var(--text-muted);
-      word-break: break-all;
-      margin-bottom: 10px;
-    }
-
     .btn-logout {
       width: 100%;
-      padding: 8px;
-      background: var(--red-bg);
-      color: var(--red);
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      background: none;
+      color: var(--text-muted);
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: color 0.15s;
     }
 
-    .btn-logout:hover { background: rgba(239, 68, 68, 0.2); }
+    .btn-logout:hover { color: var(--red); }
 
     /* ─── Main ─── */
     .main {
       margin-left: var(--sidebar-w);
       flex: 1;
-      padding: 28px 32px;
-      max-width: 1200px;
+      padding: 24px 28px;
+      min-height: 100vh;
     }
 
     .page-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .page-title {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: 0.5px;
     }
 
     .page-subtitle {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
+    }
+
+    .updated-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
     /* ─── Stats Grid ─── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 28px;
+      gap: 12px;
+      margin-bottom: 24px;
     }
 
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px 20px;
     }
 
     .stat-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -187,55 +190,64 @@
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       color: var(--text);
       line-height: 1;
     }
 
     .stat-sub {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
       margin-top: 6px;
     }
 
     .stat-value.green { color: var(--green); }
-    .stat-value.orange { color: var(--orange); }
+    .stat-value.orange { color: var(--orange-light); }
     .stat-value.blue { color: var(--blue); }
     .stat-value.purple { color: var(--purple); }
+    .stat-value.cyan { color: var(--cyan); }
 
     /* ─── Cards ─── */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
     }
 
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: 0.3px;
     }
 
-    /* ─── Tables ─── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .card-link {
+      font-size: 12px;
+      color: var(--orange);
+      cursor: pointer;
+      font-weight: 600;
+      background: none;
+      border: none;
+      transition: opacity 0.15s;
     }
+
+    .card-link:hover { opacity: 0.8; }
+
+    /* ─── Tables ─── */
+    table { width: 100%; border-collapse: collapse; }
 
     th {
       text-align: left;
-      padding: 10px 14px;
-      font-size: 11px;
+      padding: 8px 12px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -244,20 +256,68 @@
     }
 
     td {
-      padding: 12px 14px;
+      padding: 10px 12px;
       font-size: 13px;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
     }
 
-    tr:hover td { background: rgba(255,255,255,0.02); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.015); }
+
+    /* ─── User row ─── */
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .user-row:last-child { border-bottom: none; }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .user-info { flex: 1; min-width: 0; }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .user-badge {
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
 
     /* ─── Badges ─── */
     .badge {
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -269,12 +329,13 @@
     .badge.red { background: var(--red-bg); color: var(--red); }
     .badge.purple { background: var(--purple-bg); color: var(--purple); }
     .badge.amber { background: var(--amber-bg); color: var(--amber); }
+    .badge.cyan { background: var(--cyan-bg); color: var(--cyan); }
 
     /* ─── Buttons ─── */
     .btn {
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -283,36 +344,53 @@
 
     .btn-primary { background: var(--orange); color: #fff; }
     .btn-primary:hover { background: var(--orange-light); }
-    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
+    .btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; }
     .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
     .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
 
     /* ─── Search ─── */
     .search-input {
       width: 100%;
-      max-width: 320px;
-      padding: 10px 14px;
+      max-width: 300px;
+      padding: 9px 14px;
       background: var(--bg-input);
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text);
       font-size: 13px;
       outline: none;
-      transition: border-color 0.15s;
     }
 
     .search-input::placeholder { color: var(--text-muted); }
     .search-input:focus { border-color: var(--orange); }
 
     /* ─── Charts ─── */
-    .chart-container {
-      position: relative;
-      height: 260px;
-      margin-top: 16px;
-    }
+    .chart-container { position: relative; height: 220px; }
 
     /* ─── Grid layouts ─── */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* ─── Quick Links ─── */
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .quick-link {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quick-link:hover { border-color: var(--border-hover); background: var(--bg-hover); }
+    .quick-link .ql-icon { font-size: 22px; margin-bottom: 8px; }
+    .quick-link .ql-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
 
     /* ─── Login ─── */
     .login-screen {
@@ -329,33 +407,26 @@
       border-radius: 16px;
       padding: 40px;
       width: 100%;
-      max-width: 380px;
+      max-width: 360px;
+      text-align: center;
     }
 
     .login-box h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--orange);
-      margin-bottom: 6px;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
     }
 
     .login-box p {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
       margin-bottom: 28px;
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
 
     .form-input {
       width: 100%;
@@ -380,17 +451,12 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .login-btn:hover { background: var(--orange-light); }
 
-    .login-error {
-      color: var(--red);
-      font-size: 13px;
-      margin-top: 12px;
-      display: none;
-    }
+    .login-error { color: var(--red); font-size: 13px; margin-top: 12px; display: none; }
 
     /* ─── Toast ─── */
     .toast {
@@ -401,7 +467,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 12px 24px;
+      padding: 10px 20px;
       font-size: 13px;
       font-weight: 600;
       color: var(--green);
@@ -413,33 +479,30 @@
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.error { color: var(--red); }
 
-    /* ─── Page sections ─── */
+    /* ─── Pages ─── */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* ─── Empty state ─── */
-    .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-muted);
-    }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+    .empty-state .emoji { font-size: 32px; margin-bottom: 10px; }
+    .empty-state p { font-size: 13px; }
 
-    .empty-state .emoji { font-size: 36px; margin-bottom: 12px; }
-    .empty-state p { font-size: 14px; }
+    /* ─── Textarea ─── */
+    textarea.form-input { resize: vertical; min-height: 80px; font-family: inherit; }
 
     /* ─── Responsive ─── */
     @media (max-width: 780px) {
       .sidebar { display: none; }
-      .main { margin-left: 0; padding: 20px 16px; }
+      .main { margin-left: 0; padding: 16px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .grid-2 { grid-template-columns: 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .quick-links { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ─── Loading ─── */
     .spinner {
       display: inline-block;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border: 2px solid var(--border);
       border-top-color: var(--orange);
       border-radius: 50%;
@@ -447,15 +510,33 @@
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Rank number ─── */
+    .rank {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .rank.gold { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+    .rank.silver { background: rgba(148, 163, 184, 0.12); color: var(--text-secondary); }
+    .rank.bronze { background: rgba(211, 84, 0, 0.12); color: var(--orange-light); }
+    .rank.normal { background: var(--bg-input); color: var(--text-muted); }
   </style>
 </head>
 <body>
 
-  <!-- Login Screen -->
+  <!-- Login -->
   <div id="login-screen" class="login-screen">
     <div class="login-box">
       <h1>THEBRICKBOOK</h1>
-      <p>Admin Dashboard</p>
+      <p>Admin Panel</p>
       <div class="form-group">
         <label class="form-label">Password</label>
         <input type="password" id="login-password" class="form-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
@@ -465,10 +546,9 @@
     </div>
   </div>
 
-  <!-- Dashboard (hidden until auth) -->
-  <div id="app" style="display:none; width:100%; display:none;">
+  <!-- App -->
+  <div id="app" style="display:none;width:100%;">
 
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-brand">
         <h1>THEBRICKBOOK</h1>
@@ -476,332 +556,294 @@
       </div>
 
       <div class="nav-section">Overview</div>
-      <button class="nav-item active" onclick="showPage('dashboard')">
-        <span class="icon">📊</span> Dashboard
-      </button>
+      <button class="nav-item active" data-page="dashboard"><span class="icon">📊</span> Dashboard</button>
 
-      <div class="nav-section">App Data</div>
-      <button class="nav-item" onclick="showPage('users')">
-        <span class="icon">👤</span> Users
-      </button>
-      <button class="nav-item" onclick="showPage('jobs')">
-        <span class="icon">🔨</span> Jobs
-      </button>
-      <button class="nav-item" onclick="showPage('revenue')">
-        <span class="icon">💰</span> Revenue
-      </button>
+      <div class="nav-section">Users & Data</div>
+      <button class="nav-item" data-page="users"><span class="icon">👤</span> Users</button>
+      <button class="nav-item" data-page="jobs"><span class="icon">🔨</span> Jobs</button>
+      <button class="nav-item" data-page="clients"><span class="icon">📇</span> Clients</button>
+
+      <div class="nav-section">Analytics & Revenue</div>
+      <button class="nav-item" data-page="revenue"><span class="icon">💰</span> Revenue</button>
+      <button class="nav-item" data-page="analytics"><span class="icon">📈</span> Analytics</button>
 
       <div class="nav-section">Tools</div>
-      <button class="nav-item" onclick="showPage('feedback')">
-        <span class="icon">💬</span> Feedback
-      </button>
-      <button class="nav-item" onclick="showPage('devnotes')">
-        <span class="icon">📝</span> Dev Notes
-      </button>
-      <button class="nav-item" onclick="showPage('settings')">
-        <span class="icon">⚙️</span> Settings
-      </button>
+      <button class="nav-item" data-page="devnotes"><span class="icon">📝</span> Dev Notes</button>
+      <button class="nav-item" data-page="settings"><span class="icon">⚙️</span> Settings</button>
 
       <div class="sidebar-footer">
-        <div class="user-email" id="user-email"></div>
-        <button class="btn-logout" onclick="logout()">Sign Out</button>
+        <button class="btn-logout" onclick="logout()"><span class="icon">🚪</span> Logout</button>
       </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
 
-      <!-- ═══ Dashboard ═══ -->
+      <!-- ═══ DASHBOARD ═══ -->
       <div id="page-dashboard" class="page active">
         <div class="page-header">
           <div>
             <div class="page-title">Dashboard</div>
-            <div class="page-subtitle">TheBrickBook overview</div>
+            <div class="page-subtitle">TheBrickBook app metrics at a glance</div>
           </div>
-          <button class="btn btn-ghost" onclick="loadDashboard()">Refresh</button>
-        </div>
-
-        <div class="stats-grid" id="dashboard-stats">
-          <div class="stat-card">
-            <div class="stat-label">Total Users</div>
-            <div class="stat-value blue" id="stat-users">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Total Jobs</div>
-            <div class="stat-value orange" id="stat-jobs">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Invoices Sent</div>
-            <div class="stat-value green" id="stat-invoices">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Jobs Paid</div>
-            <div class="stat-value purple" id="stat-paid">-</div>
+          <div style="text-align:right;">
+            <button class="btn btn-ghost" onclick="loadDashboard()">Refresh</button>
+            <div class="updated-text" id="updated-time"></div>
           </div>
         </div>
 
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-label">Total Revenue Tracked</div>
-            <div class="stat-value green" id="stat-revenue">-</div>
-            <div class="stat-sub">Sum of all invoice amounts</div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value blue" id="s-users">-</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Total Expenses Logged</div>
-            <div class="stat-value" id="stat-expenses">-</div>
-            <div class="stat-sub">Across all users</div>
+            <div class="stat-label">Total Jobs</div>
+            <div class="stat-value orange" id="s-jobs">-</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Avg Jobs Per User</div>
-            <div class="stat-value orange" id="stat-avg-jobs">-</div>
+            <div class="stat-label">Invoices Sent</div>
+            <div class="stat-value green" id="s-invoices">-</div>
+            <div class="stat-sub" id="s-invoices-sub"></div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">New Users (7 days)</div>
-            <div class="stat-value blue" id="stat-new-users">-</div>
+            <div class="stat-label">All-Time Revenue</div>
+            <div class="stat-value green" id="s-revenue">-</div>
+            <div class="stat-sub" id="s-revenue-sub"></div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">New Users (7d)</div>
+            <div class="stat-value cyan" id="s-new7">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">New Users (30d)</div>
+            <div class="stat-value blue" id="s-new30">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">GST Registered</div>
+            <div class="stat-value purple" id="s-gst">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Jobs / User</div>
+            <div class="stat-value orange" id="s-avg">-</div>
           </div>
         </div>
 
         <div class="grid-2">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Job Status Breakdown</div>
+              <div class="card-title">New Users (Last 30 Days)</div>
+              <span class="badge blue" id="chart-users-total"></span>
             </div>
-            <div class="chart-container">
-              <canvas id="chart-jobs"></canvas>
-            </div>
+            <div class="chart-container"><canvas id="chart-users"></canvas></div>
           </div>
           <div class="card">
             <div class="card-header">
-              <div class="card-title">New Users (Last 30 Days)</div>
+              <div class="card-title">Jobs Created (Last 30 Days)</div>
+              <span class="badge orange" id="chart-jobs-total"></span>
             </div>
-            <div class="chart-container">
-              <canvas id="chart-users"></canvas>
+            <div class="chart-container"><canvas id="chart-jobs"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">New Users</div>
+              <button class="card-link" onclick="navTo('users')">View all users</button>
             </div>
+            <div id="dash-recent-users"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Top Users</div>
+              <span style="font-size:11px;color:var(--text-muted)">By jobs created</span>
+            </div>
+            <div id="dash-top-users"></div>
           </div>
         </div>
 
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Recent Users</div>
+            <div class="card-title">Job Status Breakdown</div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Business Name</th>
-                <th>Email</th>
-                <th>GST</th>
-                <th>Joined</th>
-              </tr>
-            </thead>
-            <tbody id="recent-users-table"></tbody>
-          </table>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;" id="dash-status-pills"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Quick Links</div></div>
+          <div class="quick-links">
+            <div class="quick-link" onclick="navTo('users')"><div class="ql-icon">👤</div><div class="ql-label">Users</div></div>
+            <div class="quick-link" onclick="navTo('jobs')"><div class="ql-icon">🔨</div><div class="ql-label">Jobs</div></div>
+            <div class="quick-link" onclick="navTo('revenue')"><div class="ql-icon">💰</div><div class="ql-label">Revenue</div></div>
+            <div class="quick-link" onclick="navTo('analytics')"><div class="ql-icon">📈</div><div class="ql-label">Analytics</div></div>
+            <div class="quick-link" onclick="navTo('clients')"><div class="ql-icon">📇</div><div class="ql-label">Clients</div></div>
+            <div class="quick-link" onclick="navTo('devnotes')"><div class="ql-icon">📝</div><div class="ql-label">Dev Notes</div></div>
+            <div class="quick-link" onclick="navTo('settings')"><div class="ql-icon">⚙️</div><div class="ql-label">Settings</div></div>
+            <div class="quick-link" onclick="window.open('https://thebrickbook.com','_blank')"><div class="ql-icon">🌐</div><div class="ql-label">Website</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- ═══ Users ═══ -->
+      <!-- ═══ USERS ═══ -->
       <div id="page-users" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Users</div>
-            <div class="page-subtitle">All registered users</div>
-          </div>
+          <div><div class="page-title">Users</div><div class="page-subtitle">All registered users</div></div>
           <input type="text" class="search-input" placeholder="Search users..." oninput="filterUsers(this.value)">
         </div>
         <div class="card">
           <table>
-            <thead>
-              <tr>
-                <th>Business Name</th>
-                <th>ABN</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>GST</th>
-                <th>Jobs</th>
-                <th>Joined</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Business</th><th>ABN</th><th>Phone</th><th>Email</th><th>GST</th><th>Jobs</th><th>Joined</th></tr></thead>
             <tbody id="users-table"></tbody>
           </table>
-          <div class="empty-state" id="users-empty" style="display:none;">
-            <div class="emoji">👤</div>
-            <p>No users found</p>
-          </div>
+          <div class="empty-state" id="users-empty" style="display:none;"><div class="emoji">👤</div><p>No users found</p></div>
         </div>
       </div>
 
-      <!-- ═══ Jobs ═══ -->
+      <!-- ═══ JOBS ═══ -->
       <div id="page-jobs" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Jobs</div>
-            <div class="page-subtitle">All jobs across all users</div>
-          </div>
+          <div><div class="page-title">Jobs</div><div class="page-subtitle">All jobs across all users</div></div>
           <input type="text" class="search-input" placeholder="Search jobs..." oninput="filterJobs(this.value)">
         </div>
         <div class="stats-grid" id="jobs-stats"></div>
         <div class="card">
           <table>
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Job Type</th>
-                <th>Status</th>
-                <th>Quote</th>
-                <th>Invoice</th>
-                <th>Hours</th>
-                <th>Created</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Client</th><th>Job Type</th><th>Status</th><th>Quote</th><th>Invoice</th><th>Hours</th><th>Created</th></tr></thead>
             <tbody id="jobs-table"></tbody>
           </table>
-          <div class="empty-state" id="jobs-empty" style="display:none;">
-            <div class="emoji">🔨</div>
-            <p>No jobs yet</p>
-          </div>
+          <div class="empty-state" id="jobs-empty" style="display:none;"><div class="emoji">🔨</div><p>No jobs yet</p></div>
         </div>
       </div>
 
-      <!-- ═══ Revenue ═══ -->
+      <!-- ═══ CLIENTS ═══ -->
+      <div id="page-clients" class="page">
+        <div class="page-header">
+          <div><div class="page-title">Clients</div><div class="page-subtitle">All clients across all users</div></div>
+          <input type="text" class="search-input" placeholder="Search clients..." oninput="filterClients(this.value)">
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Added</th></tr></thead>
+            <tbody id="clients-table"></tbody>
+          </table>
+          <div class="empty-state" id="clients-empty" style="display:none;"><div class="emoji">📇</div><p>No clients yet</p></div>
+        </div>
+      </div>
+
+      <!-- ═══ REVENUE ═══ -->
       <div id="page-revenue" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Revenue Overview</div>
-            <div class="page-subtitle">Platform-wide financial data</div>
-          </div>
+          <div><div class="page-title">Revenue</div><div class="page-subtitle">Platform-wide financial data</div></div>
         </div>
         <div class="stats-grid" id="revenue-stats"></div>
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Revenue Over Time (Invoiced Jobs)</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="chart-revenue"></canvas>
-          </div>
+          <div class="card-header"><div class="card-title">Revenue Over Time</div></div>
+          <div class="chart-container"><canvas id="chart-revenue"></canvas></div>
         </div>
         <div class="grid-2">
           <div class="card">
-            <div class="card-header">
-              <div class="card-title">Top Job Types by Revenue</div>
-            </div>
-            <table>
-              <thead><tr><th>Job Type</th><th>Count</th><th>Total Revenue</th></tr></thead>
-              <tbody id="top-jobs-table"></tbody>
-            </table>
+            <div class="card-header"><div class="card-title">Top Job Types by Revenue</div></div>
+            <table><thead><tr><th>Job Type</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="top-jobs-table"></tbody></table>
           </div>
           <div class="card">
-            <div class="card-header">
-              <div class="card-title">Expense Categories</div>
-            </div>
-            <table>
-              <thead><tr><th>Category</th><th>Count</th><th>Total</th></tr></thead>
-              <tbody id="expense-cats-table"></tbody>
-            </table>
+            <div class="card-header"><div class="card-title">Expense Categories</div></div>
+            <table><thead><tr><th>Category</th><th>Count</th><th>Total</th></tr></thead><tbody id="expense-cats-table"></tbody></table>
           </div>
         </div>
       </div>
 
-      <!-- ═══ Feedback ═══ -->
-      <div id="page-feedback" class="page">
+      <!-- ═══ ANALYTICS ═══ -->
+      <div id="page-analytics" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Feedback</div>
-            <div class="page-subtitle">User feedback and support messages</div>
+          <div><div class="page-title">Analytics</div><div class="page-subtitle">Detailed engagement metrics</div></div>
+        </div>
+        <div class="stats-grid" id="analytics-stats"></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Job Status Distribution</div></div>
+            <div class="chart-container"><canvas id="chart-status"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Top Industries</div></div>
+            <div class="chart-container"><canvas id="chart-industries"></canvas></div>
           </div>
         </div>
         <div class="card">
-          <div class="empty-state" id="feedback-empty">
-            <div class="emoji">💬</div>
-            <p>No feedback table found. Create a <code>feedback</code> table in Supabase to enable this feature.</p>
-          </div>
-          <table style="display:none;" id="feedback-table-wrap">
-            <thead><tr><th>User</th><th>Message</th><th>Date</th><th>Status</th></tr></thead>
-            <tbody id="feedback-table"></tbody>
+          <div class="card-header"><div class="card-title">Engagement Metrics</div></div>
+          <table>
+            <thead><tr><th>Metric</th><th>Value</th><th>Detail</th></tr></thead>
+            <tbody id="engagement-table"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- ═══ Dev Notes ═══ -->
+      <!-- ═══ DEV NOTES ═══ -->
       <div id="page-devnotes" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Dev Notes</div>
-            <div class="page-subtitle">Internal development notes and todos</div>
-          </div>
+          <div><div class="page-title">Dev Notes</div><div class="page-subtitle">Internal development notes</div></div>
           <button class="btn btn-primary" onclick="showAddNote()">+ Add Note</button>
         </div>
-
-        <div class="card" id="add-note-card" style="display:none; margin-bottom: 20px;">
+        <div class="card" id="add-note-card" style="display:none;margin-bottom:16px;">
           <div class="form-group">
-            <label class="form-label">Note</label>
-            <textarea id="note-text" class="form-input" rows="3" placeholder="What needs to be done?" style="resize:vertical;min-height:80px;"></textarea>
+            <textarea id="note-text" class="form-input" rows="3" placeholder="What needs to be done?"></textarea>
           </div>
-          <div style="display:flex;gap:8px;margin-top:12px;">
+          <div style="display:flex;gap:8px;margin-top:10px;">
             <button class="btn btn-primary" onclick="saveNote()">Save</button>
             <button class="btn btn-ghost" onclick="hideAddNote()">Cancel</button>
           </div>
         </div>
-
         <div id="notes-open"></div>
-        <div id="notes-done" style="margin-top:24px;"></div>
+        <div id="notes-done" style="margin-top:20px;"></div>
       </div>
 
-      <!-- ═══ Settings ═══ -->
+      <!-- ═══ SETTINGS ═══ -->
       <div id="page-settings" class="page">
         <div class="page-header">
-          <div>
-            <div class="page-title">Settings</div>
-            <div class="page-subtitle">Database connection and configuration</div>
-          </div>
+          <div><div class="page-title">Settings</div><div class="page-subtitle">Database connection and configuration</div></div>
         </div>
-
         <div class="card">
           <div class="card-header"><div class="card-title">Supabase Connection</div></div>
           <table>
-            <tr><td style="width:140px;font-weight:600;">URL</td><td style="font-family:monospace;font-size:12px;" id="sb-url"></td></tr>
+            <tr><td style="width:120px;font-weight:600;">URL</td><td style="font-family:monospace;font-size:12px;" id="sb-url"></td></tr>
             <tr><td style="font-weight:600;">Anon Key</td><td style="font-family:monospace;font-size:12px;" id="sb-key"></td></tr>
             <tr><td style="font-weight:600;">Status</td><td id="sb-status"><span class="spinner"></span></td></tr>
           </table>
         </div>
-
         <div class="card">
           <div class="card-header"><div class="card-title">Database Tables</div></div>
           <div id="db-tables"></div>
         </div>
-
-        <div class="card" style="border-color: rgba(239,68,68,0.3);">
-          <div class="card-header"><div class="card-title" style="color:var(--red);">Danger Zone</div></div>
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Create required admin tables if they don't exist yet.</p>
-          <button class="btn btn-ghost" onclick="createAdminTables()" style="border-color:rgba(239,68,68,0.3);color:var(--red);">Create Admin Tables (dev_notes)</button>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Quick Actions</div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="window.open('https://supabase.com/dashboard','_blank')">Open Supabase</button>
+            <button class="btn btn-ghost" onclick="window.open('https://analytics.google.com','_blank')">Google Analytics</button>
+            <button class="btn btn-ghost" onclick="window.open('https://search.google.com/search-console','_blank')">Search Console</button>
+            <button class="btn btn-ghost" onclick="window.open('https://appstoreconnect.apple.com','_blank')">App Store Connect</button>
+          </div>
         </div>
       </div>
 
     </main>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script>
-    // ─── Supabase ───
     const SUPABASE_URL = 'https://lrqkcgubmmvpxyjuhugc.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzkxNDAsImV4cCI6MjA4OTUxNTE0MH0.yGnd-oQMeXWt3ebtLHHSpYwbsmaMFulW4gs1_XOEeuI';
-
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // ─── State ───
-    let allUsers = [];
-    let allJobs = [];
-    let allExpenses = [];
-    let chartJobs = null;
-    let chartUsers = null;
-    let chartRevenue = null;
-
-    // ─── Auth ───
     const ADMIN_HASH = 'cc92ab68d8cc7a2d543b1eb7dd026499cf85cf95a7686706cf0bf9f7105302b6';
 
+    let allUsers = [], allJobs = [], allExpenses = [], allClients = [], allWages = [];
+    let charts = {};
+
+    // ─── Auth ───
     async function hashPassword(pw) {
-      const enc = new TextEncoder().encode(pw);
-      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
@@ -809,154 +851,158 @@
       if (sessionStorage.getItem('tbb_admin') === 'true') {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display = 'flex';
-        document.getElementById('user-email').textContent = 'Admin';
         loadDashboard();
       }
     }
 
     async function login() {
-      const password = document.getElementById('login-password').value;
-      const errEl = document.getElementById('login-error');
-      errEl.style.display = 'none';
-
-      const hash = await hashPassword(password);
-      if (hash === ADMIN_HASH) {
+      const pw = document.getElementById('login-password').value;
+      const err = document.getElementById('login-error');
+      err.style.display = 'none';
+      if (await hashPassword(pw) === ADMIN_HASH) {
         sessionStorage.setItem('tbb_admin', 'true');
         checkAuth();
       } else {
-        errEl.textContent = 'Wrong password';
-        errEl.style.display = 'block';
+        err.textContent = 'Wrong password';
+        err.style.display = 'block';
       }
     }
 
-    function logout() {
-      sessionStorage.removeItem('tbb_admin');
-      location.reload();
-    }
+    function logout() { sessionStorage.removeItem('tbb_admin'); location.reload(); }
 
     // ─── Navigation ───
-    function showPage(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
-      event.target.closest('.nav-item').classList.add('active');
+    document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        btn.classList.add('active');
+        const page = btn.dataset.page;
+        document.getElementById('page-' + page).classList.add('active');
+        loaders[page]?.();
+      });
+    });
 
-      if (page === 'dashboard') loadDashboard();
-      if (page === 'users') loadUsers();
-      if (page === 'jobs') loadJobs();
-      if (page === 'revenue') loadRevenue();
-      if (page === 'devnotes') loadNotes();
-      if (page === 'settings') loadSettings();
-      if (page === 'feedback') loadFeedback();
+    function navTo(page) {
+      const btn = document.querySelector(`.nav-item[data-page="${page}"]`);
+      if (btn) btn.click();
     }
+
+    const loaders = {
+      dashboard: loadDashboard,
+      users: loadUsers,
+      jobs: loadJobs,
+      clients: loadClients,
+      revenue: loadRevenue,
+      analytics: loadAnalytics,
+      devnotes: loadNotes,
+      settings: loadSettings
+    };
 
     // ─── Dashboard ───
     async function loadDashboard() {
-      try {
-        const [profiles, jobs, expenses] = await Promise.all([
-          sb.from('profiles').select('*'),
-          sb.from('jobs').select('*'),
-          sb.from('expenses').select('*')
-        ]);
+      const now = new Date();
+      document.getElementById('updated-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        allUsers = profiles.data || [];
-        allJobs = jobs.data || [];
-        allExpenses = expenses.data || [];
+      const [p, j, e, w, c] = await Promise.all([
+        sb.from('profiles').select('*'),
+        sb.from('jobs').select('*'),
+        sb.from('expenses').select('*'),
+        sb.from('wages').select('*'),
+        sb.from('clients').select('*')
+      ]);
 
-        // Stats
-        const invoicedJobs = allJobs.filter(j => ['invoiced', 'paid'].includes(j.status));
-        const paidJobs = allJobs.filter(j => j.status === 'paid');
-        const totalRevenue = invoicedJobs.reduce((sum, j) => sum + Number(j.invoice_amount || j.quote_amount || 0), 0);
-        const totalExpenses = allExpenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-        const avgJobs = allUsers.length ? (allJobs.length / allUsers.length).toFixed(1) : '0';
+      allUsers = p.data || []; allJobs = j.data || []; allExpenses = e.data || []; allWages = w.data || []; allClients = c.data || [];
 
-        const weekAgo = new Date();
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        const newUsers = allUsers.filter(u => new Date(u.created_at) > weekAgo).length;
+      const invoiced = allJobs.filter(j => ['invoiced','paid'].includes(j.status));
+      const paid = allJobs.filter(j => j.status === 'paid');
+      const totalRev = invoiced.reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
+      const d7 = new Date(); d7.setDate(d7.getDate() - 7);
+      const d30 = new Date(); d30.setDate(d30.getDate() - 30);
+      const new7 = allUsers.filter(u => new Date(u.created_at) > d7).length;
+      const new30 = allUsers.filter(u => new Date(u.created_at) > d30).length;
+      const gstCount = allUsers.filter(u => u.gst_registered).length;
+      const avgJobs = allUsers.length ? (allJobs.length / allUsers.length).toFixed(1) : '0';
 
-        document.getElementById('stat-users').textContent = allUsers.length;
-        document.getElementById('stat-jobs').textContent = allJobs.length;
-        document.getElementById('stat-invoices').textContent = invoicedJobs.length;
-        document.getElementById('stat-paid').textContent = paidJobs.length;
-        document.getElementById('stat-revenue').textContent = '$' + totalRevenue.toLocaleString();
-        document.getElementById('stat-expenses').textContent = '$' + totalExpenses.toLocaleString();
-        document.getElementById('stat-avg-jobs').textContent = avgJobs;
-        document.getElementById('stat-new-users').textContent = newUsers;
+      document.getElementById('s-users').textContent = allUsers.length;
+      document.getElementById('s-jobs').textContent = allJobs.length;
+      document.getElementById('s-invoices').textContent = invoiced.length;
+      document.getElementById('s-invoices-sub').textContent = paid.length + ' paid';
+      document.getElementById('s-revenue').textContent = '$' + totalRev.toLocaleString();
+      document.getElementById('s-revenue-sub').textContent = 'From ' + invoiced.length + ' invoices';
+      document.getElementById('s-new7').textContent = new7;
+      document.getElementById('s-new30').textContent = new30;
+      document.getElementById('s-gst').textContent = gstCount;
+      document.getElementById('s-avg').textContent = avgJobs;
 
-        // Recent users table
-        const recent = [...allUsers].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8);
-        document.getElementById('recent-users-table').innerHTML = recent.map(u => `
-          <tr>
-            <td style="font-weight:600;color:var(--text)">${u.business_name || 'No name'}</td>
-            <td>${u.email || '-'}</td>
-            <td>${u.gst_registered ? '<span class="badge green">Yes</span>' : '<span class="badge" style="background:var(--bg-input);color:var(--text-muted)">No</span>'}</td>
-            <td>${timeAgo(u.created_at)}</td>
-          </tr>
-        `).join('');
+      // Status pills
+      const statuses = { quoted: { color: 'blue', label: 'Quoted' }, in_progress: { color: 'orange', label: 'In Progress' }, completed: { color: 'green', label: 'Completed' }, invoiced: { color: 'purple', label: 'Invoiced' }, paid: { color: 'green', label: 'Paid' } };
+      document.getElementById('dash-status-pills').innerHTML = Object.entries(statuses).map(([k, v]) => {
+        const count = allJobs.filter(j => j.status === k).length;
+        return `<div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--${v.color}-bg);border-radius:8px;"><span style="font-weight:800;color:var(--${v.color})">${count}</span><span style="font-size:12px;color:var(--${v.color})">${v.label}</span></div>`;
+      }).join('');
 
-        // Charts
-        renderJobsChart();
-        renderUsersChart();
-      } catch (e) {
-        console.error('Dashboard load error:', e);
-      }
+      // Recent users
+      const avatarColors = ['#3B82F6','#8B5CF6','#d35400','#10B981','#EF4444','#06B6D4','#F59E0B'];
+      const recent = [...allUsers].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
+      document.getElementById('dash-recent-users').innerHTML = recent.map((u, i) => {
+        const init = (u.business_name || u.email || '?')[0].toUpperCase();
+        const color = avatarColors[i % avatarColors.length];
+        const jobCount = allJobs.filter(j => j.user_id === u.id).length;
+        return `<div class="user-row">
+          <div class="avatar" style="background:${color}20;color:${color}">${init}</div>
+          <div class="user-info">
+            <div class="user-name">${u.business_name || 'No name'}</div>
+            <div class="user-meta">${jobCount} job${jobCount !== 1 ? 's' : ''} ${u.gst_registered ? '· GST' : ''}</div>
+          </div>
+          <div class="user-badge">${timeAgo(u.created_at)}</div>
+        </div>`;
+      }).join('') || '<div class="empty-state"><p>No users yet</p></div>';
+
+      // Top users by job count
+      const userJobs = {};
+      allJobs.forEach(j => { userJobs[j.user_id] = (userJobs[j.user_id] || 0) + 1; });
+      const topUsers = Object.entries(userJobs).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      document.getElementById('dash-top-users').innerHTML = topUsers.map(([uid, count], i) => {
+        const u = allUsers.find(u => u.id === uid) || {};
+        const init = (u.business_name || '?')[0].toUpperCase();
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
+        const rev = allJobs.filter(j => j.user_id === uid && ['invoiced','paid'].includes(j.status)).reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
+        return `<div class="user-row">
+          <div class="rank ${rankClass}">${i + 1}</div>
+          <div class="avatar" style="background:var(--orange-bg);color:var(--orange-light)">${init}</div>
+          <div class="user-info">
+            <div class="user-name">${u.business_name || 'Unknown'}</div>
+            <div class="user-meta">${count} jobs · $${rev.toLocaleString()} revenue</div>
+          </div>
+        </div>`;
+      }).join('') || '<div class="empty-state"><p>No data yet</p></div>';
+
+      // Charts
+      renderBarChart('chart-users', allUsers, 'created_at', '#3B82F6', 'chart-users-total');
+      renderBarChart('chart-jobs', allJobs, 'created_at', '#e67e22', 'chart-jobs-total');
     }
 
-    function renderJobsChart() {
-      const statuses = ['quoted', 'in_progress', 'completed', 'invoiced', 'paid'];
-      const labels = ['Quoted', 'In Progress', 'Completed', 'Invoiced', 'Paid'];
-      const colors = ['#3B82F6', '#e67e22', '#10B981', '#8B5CF6', '#22C55E'];
-      const data = statuses.map(s => allJobs.filter(j => j.status === s).length);
-
-      const ctx = document.getElementById('chart-jobs');
-      if (chartJobs) chartJobs.destroy();
-      chartJobs = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels,
-          datasets: [{ data, backgroundColor: colors, borderWidth: 0 }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 11 } } }
-          }
-        }
-      });
-    }
-
-    function renderUsersChart() {
-      const days = 30;
-      const labels = [];
-      const data = [];
-
+    function renderBarChart(canvasId, data, dateField, color, totalBadgeId) {
+      const days = 30, labels = [], values = [];
+      let total = 0;
       for (let i = days - 1; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
+        const d = new Date(); d.setDate(d.getDate() - i);
         const key = d.toISOString().split('T')[0];
-        labels.push(d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }));
-        data.push(allUsers.filter(u => u.created_at && u.created_at.startsWith(key)).length);
+        labels.push(d.toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }));
+        const count = data.filter(item => item[dateField] && item[dateField].startsWith(key)).length;
+        values.push(count);
+        total += count;
       }
+      if (totalBadgeId) document.getElementById(totalBadgeId).textContent = total + ' total';
 
-      const ctx = document.getElementById('chart-users');
-      if (chartUsers) chartUsers.destroy();
-      chartUsers = new Chart(ctx, {
+      if (charts[canvasId]) charts[canvasId].destroy();
+      charts[canvasId] = new Chart(document.getElementById(canvasId), {
         type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label: 'New Users',
-            data,
-            backgroundColor: 'rgba(59, 130, 246, 0.6)',
-            borderRadius: 4
-          }]
-        },
+        data: { labels, datasets: [{ data: values, backgroundColor: color + '99', borderRadius: 3 }] },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           scales: {
-            x: { ticks: { color: '#64748B', font: { size: 10 } }, grid: { display: false } },
+            x: { ticks: { color: '#64748B', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { display: false } },
             y: { ticks: { color: '#64748B', stepSize: 1 }, grid: { color: '#1E293B' }, beginAtZero: true }
           },
           plugins: { legend: { display: false } }
@@ -966,357 +1012,238 @@
 
     // ─── Users ───
     async function loadUsers() {
-      const { data } = await sb.from('profiles').select('*');
-      allUsers = data || [];
-
-      // Get job counts per user
-      const { data: jobs } = await sb.from('jobs').select('user_id');
+      if (!allUsers.length) { const { data } = await sb.from('profiles').select('*'); allUsers = data || []; }
+      if (!allJobs.length) { const { data } = await sb.from('jobs').select('user_id'); allJobs = data || []; }
       const jobCounts = {};
-      (jobs || []).forEach(j => { jobCounts[j.user_id] = (jobCounts[j.user_id] || 0) + 1; });
-
+      allJobs.forEach(j => { jobCounts[j.user_id] = (jobCounts[j.user_id] || 0) + 1; });
       renderUsers(allUsers, jobCounts);
     }
 
     function renderUsers(users, jobCounts = {}) {
       const el = document.getElementById('users-table');
       const empty = document.getElementById('users-empty');
-
-      if (!users.length) {
-        el.innerHTML = '';
-        empty.style.display = 'block';
-        return;
-      }
+      if (!users.length) { el.innerHTML = ''; empty.style.display = 'block'; return; }
       empty.style.display = 'none';
-
-      el.innerHTML = users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(u => `
-        <tr>
-          <td style="font-weight:600;color:var(--text)">${u.business_name || 'No name'}</td>
-          <td style="font-family:monospace;font-size:12px;">${u.abn || '-'}</td>
-          <td>${u.phone || '-'}</td>
-          <td>${u.email || '-'}</td>
-          <td>${u.gst_registered ? '<span class="badge green">GST</span>' : '-'}</td>
-          <td>${jobCounts[u.id] || 0}</td>
-          <td>${timeAgo(u.created_at)}</td>
-        </tr>
-      `).join('');
+      el.innerHTML = users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(u => `<tr>
+        <td style="font-weight:600;color:var(--text)">${u.business_name || 'No name'}</td>
+        <td style="font-family:monospace;font-size:11px;">${u.abn || '-'}</td>
+        <td>${u.phone || '-'}</td>
+        <td>${u.email || '-'}</td>
+        <td>${u.gst_registered ? '<span class="badge green">GST</span>' : '-'}</td>
+        <td>${jobCounts[u.id] || 0}</td>
+        <td>${timeAgo(u.created_at)}</td>
+      </tr>`).join('');
     }
 
-    function filterUsers(query) {
-      const q = query.toLowerCase();
-      const filtered = allUsers.filter(u =>
-        (u.business_name || '').toLowerCase().includes(q) ||
-        (u.email || '').toLowerCase().includes(q) ||
-        (u.abn || '').includes(q)
-      );
-      renderUsers(filtered);
-    }
+    function filterUsers(q) { q = q.toLowerCase(); renderUsers(allUsers.filter(u => (u.business_name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q) || (u.abn||'').includes(q))); }
 
     // ─── Jobs ───
     async function loadJobs() {
-      const { data } = await sb.from('jobs').select('*').order('created_at', { ascending: false }).limit(200);
+      const { data } = await sb.from('jobs').select('*').order('created_at', { ascending: false }).limit(300);
       allJobs = data || [];
-
-      // Stats
-      const statuses = { quoted: 0, in_progress: 0, completed: 0, invoiced: 0, paid: 0 };
-      allJobs.forEach(j => { if (statuses[j.status] !== undefined) statuses[j.status]++; });
-
-      document.getElementById('jobs-stats').innerHTML = Object.entries(statuses).map(([s, c]) => {
-        const colors = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
-        const labels = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
-        return `<div class="stat-card"><div class="stat-label">${labels[s]}</div><div class="stat-value ${colors[s]}">${c}</div></div>`;
-      }).join('');
-
+      const sts = { quoted: 0, in_progress: 0, completed: 0, invoiced: 0, paid: 0 };
+      allJobs.forEach(j => { if (sts[j.status] !== undefined) sts[j.status]++; });
+      const colors = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
+      const labels = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
+      document.getElementById('jobs-stats').innerHTML = Object.entries(sts).map(([s, c]) => `<div class="stat-card"><div class="stat-label">${labels[s]}</div><div class="stat-value ${colors[s]}">${c}</div></div>`).join('');
       renderJobs(allJobs);
     }
 
     function renderJobs(jobs) {
       const el = document.getElementById('jobs-table');
       const empty = document.getElementById('jobs-empty');
-
       if (!jobs.length) { el.innerHTML = ''; empty.style.display = 'block'; return; }
       empty.style.display = 'none';
-
-      const statusBadge = (s) => {
-        const map = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
-        const labels = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
-        return `<span class="badge ${map[s] || ''}">${labels[s] || s}</span>`;
-      };
-
-      el.innerHTML = jobs.map(j => `
-        <tr>
-          <td style="font-weight:600;color:var(--text)">${j.client_name}</td>
-          <td>${j.job_type}</td>
-          <td>${statusBadge(j.status)}</td>
-          <td>$${Number(j.quote_amount || 0).toLocaleString()}</td>
-          <td>${j.invoice_amount ? '$' + Number(j.invoice_amount).toLocaleString() : '-'}</td>
-          <td>${j.timer_seconds ? (j.timer_seconds / 3600).toFixed(1) + 'h' : '-'}</td>
-          <td>${timeAgo(j.created_at)}</td>
-        </tr>
-      `).join('');
+      const badgeMap = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
+      const labelMap = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
+      el.innerHTML = jobs.map(j => `<tr>
+        <td style="font-weight:600;color:var(--text)">${j.client_name}</td>
+        <td>${j.job_type}</td>
+        <td><span class="badge ${badgeMap[j.status]||''}">${labelMap[j.status]||j.status}</span></td>
+        <td>$${Number(j.quote_amount||0).toLocaleString()}</td>
+        <td>${j.invoice_amount ? '$'+Number(j.invoice_amount).toLocaleString() : '-'}</td>
+        <td>${j.timer_seconds ? (j.timer_seconds/3600).toFixed(1)+'h' : '-'}</td>
+        <td>${timeAgo(j.created_at)}</td>
+      </tr>`).join('');
     }
 
-    function filterJobs(query) {
-      const q = query.toLowerCase();
-      const filtered = allJobs.filter(j =>
-        j.client_name.toLowerCase().includes(q) ||
-        j.job_type.toLowerCase().includes(q) ||
-        j.status.includes(q)
-      );
-      renderJobs(filtered);
+    function filterJobs(q) { q = q.toLowerCase(); renderJobs(allJobs.filter(j => j.client_name.toLowerCase().includes(q) || j.job_type.toLowerCase().includes(q))); }
+
+    // ─── Clients ───
+    async function loadClients() {
+      const { data } = await sb.from('clients').select('*').order('created_at', { ascending: false });
+      allClients = data || [];
+      renderClients(allClients);
     }
+
+    function renderClients(clients) {
+      const el = document.getElementById('clients-table');
+      const empty = document.getElementById('clients-empty');
+      if (!clients.length) { el.innerHTML = ''; empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+      el.innerHTML = clients.map(c => `<tr>
+        <td style="font-weight:600;color:var(--text)">${c.name}</td>
+        <td>${c.phone||'-'}</td>
+        <td>${c.email||'-'}</td>
+        <td>${c.address||'-'}</td>
+        <td>${timeAgo(c.created_at)}</td>
+      </tr>`).join('');
+    }
+
+    function filterClients(q) { q = q.toLowerCase(); renderClients(allClients.filter(c => c.name.toLowerCase().includes(q) || (c.email||'').toLowerCase().includes(q))); }
 
     // ─── Revenue ───
     async function loadRevenue() {
-      const [jobsRes, expensesRes] = await Promise.all([
-        sb.from('jobs').select('*').in('status', ['invoiced', 'paid']).order('invoiced_at', { ascending: true }),
-        sb.from('expenses').select('*')
-      ]);
+      if (!allJobs.length) { const { data } = await sb.from('jobs').select('*'); allJobs = data || []; }
+      if (!allExpenses.length) { const { data } = await sb.from('expenses').select('*'); allExpenses = data || []; }
+      if (!allWages.length) { const { data } = await sb.from('wages').select('*'); allWages = data || []; }
 
-      const jobs = jobsRes.data || [];
-      const expenses = expensesRes.data || [];
-      const totalRev = jobs.reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
-      const totalExp = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
-      const totalProfit = totalRev - totalExp;
-      const paidJobs = jobs.filter(j => j.status === 'paid');
-      const paidRev = paidJobs.reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
+      const inv = allJobs.filter(j => ['invoiced','paid'].includes(j.status));
+      const totalRev = inv.reduce((s,j) => s + Number(j.invoice_amount||j.quote_amount||0), 0);
+      const totalExp = allExpenses.reduce((s,e) => s + Number(e.amount||0), 0);
+      const totalWages = allWages.reduce((s,w) => s + Number(w.amount||0), 0);
+      const profit = totalRev - totalExp - totalWages;
 
       document.getElementById('revenue-stats').innerHTML = `
         <div class="stat-card"><div class="stat-label">Total Invoiced</div><div class="stat-value green">$${totalRev.toLocaleString()}</div></div>
         <div class="stat-card"><div class="stat-label">Total Expenses</div><div class="stat-value">$${totalExp.toLocaleString()}</div></div>
-        <div class="stat-card"><div class="stat-label">Est. Profit</div><div class="stat-value ${totalProfit >= 0 ? 'green' : ''}" style="${totalProfit < 0 ? 'color:var(--red)' : ''}">$${totalProfit.toLocaleString()}</div></div>
-        <div class="stat-card"><div class="stat-label">Paid Revenue</div><div class="stat-value purple">$${paidRev.toLocaleString()}</div></div>
-      `;
+        <div class="stat-card"><div class="stat-label">Total Wages</div><div class="stat-value orange">$${totalWages.toLocaleString()}</div></div>
+        <div class="stat-card"><div class="stat-label">Est. Profit</div><div class="stat-value ${profit>=0?'green':''}" ${profit<0?'style="color:var(--red)"':''}>$${profit.toLocaleString()}</div></div>`;
 
       // Revenue chart
       const monthly = {};
-      jobs.forEach(j => {
+      inv.forEach(j => {
         const d = new Date(j.invoiced_at || j.created_at);
         const key = d.toLocaleDateString('en-AU', { month: 'short', year: '2-digit' });
         monthly[key] = (monthly[key] || 0) + Number(j.invoice_amount || j.quote_amount || 0);
       });
-
-      const ctx = document.getElementById('chart-revenue');
-      if (chartRevenue) chartRevenue.destroy();
+      if (charts['chart-revenue']) charts['chart-revenue'].destroy();
       if (Object.keys(monthly).length) {
-        chartRevenue = new Chart(ctx, {
+        charts['chart-revenue'] = new Chart(document.getElementById('chart-revenue'), {
           type: 'line',
-          data: {
-            labels: Object.keys(monthly),
-            datasets: [{
-              label: 'Revenue',
-              data: Object.values(monthly),
-              borderColor: '#10B981',
-              backgroundColor: 'rgba(16, 185, 129, 0.1)',
-              fill: true,
-              tension: 0.3,
-              borderWidth: 2,
-              pointRadius: 4,
-              pointBackgroundColor: '#10B981'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: { ticks: { color: '#64748B' }, grid: { display: false } },
-              y: { ticks: { color: '#64748B', callback: v => '$' + v.toLocaleString() }, grid: { color: '#1E293B' }, beginAtZero: true }
-            },
-            plugins: { legend: { display: false } }
-          }
+          data: { labels: Object.keys(monthly), datasets: [{ data: Object.values(monthly), borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#10B981' }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#64748B' }, grid: { display: false } }, y: { ticks: { color: '#64748B', callback: v => '$'+v.toLocaleString() }, grid: { color: '#1E293B' }, beginAtZero: true } }, plugins: { legend: { display: false } } }
         });
       }
 
-      // Top job types
+      // Top jobs
       const jobTypes = {};
-      (allJobs.length ? allJobs : jobs).forEach(j => {
-        if (!jobTypes[j.job_type]) jobTypes[j.job_type] = { count: 0, revenue: 0 };
-        jobTypes[j.job_type].count++;
-        jobTypes[j.job_type].revenue += Number(j.invoice_amount || j.quote_amount || 0);
-      });
-      const sorted = Object.entries(jobTypes).sort((a, b) => b[1].revenue - a[1].revenue).slice(0, 10);
-      document.getElementById('top-jobs-table').innerHTML = sorted.map(([type, d]) => `
-        <tr><td style="font-weight:600;color:var(--text)">${type}</td><td>${d.count}</td><td>$${d.revenue.toLocaleString()}</td></tr>
-      `).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
+      allJobs.forEach(j => { if (!jobTypes[j.job_type]) jobTypes[j.job_type] = { count: 0, rev: 0 }; jobTypes[j.job_type].count++; jobTypes[j.job_type].rev += Number(j.invoice_amount||j.quote_amount||0); });
+      document.getElementById('top-jobs-table').innerHTML = Object.entries(jobTypes).sort((a,b) => b[1].rev - a[1].rev).slice(0,10).map(([t,d]) => `<tr><td style="font-weight:600;color:var(--text)">${t}</td><td>${d.count}</td><td>$${d.rev.toLocaleString()}</td></tr>`).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
 
-      // Expense categories
+      // Expense cats
       const cats = {};
-      expenses.forEach(e => {
-        if (!cats[e.category]) cats[e.category] = { count: 0, total: 0 };
-        cats[e.category].count++;
-        cats[e.category].total += Number(e.amount || 0);
-      });
-      const sortedCats = Object.entries(cats).sort((a, b) => b[1].total - a[1].total);
-      document.getElementById('expense-cats-table').innerHTML = sortedCats.map(([cat, d]) => `
-        <tr><td style="font-weight:600;color:var(--text);text-transform:capitalize">${cat}</td><td>${d.count}</td><td>$${d.total.toLocaleString()}</td></tr>
-      `).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
+      allExpenses.forEach(e => { if (!cats[e.category]) cats[e.category] = { count: 0, total: 0 }; cats[e.category].count++; cats[e.category].total += Number(e.amount||0); });
+      document.getElementById('expense-cats-table').innerHTML = Object.entries(cats).sort((a,b) => b[1].total - a[1].total).map(([c,d]) => `<tr><td style="font-weight:600;color:var(--text);text-transform:capitalize">${c}</td><td>${d.count}</td><td>$${d.total.toLocaleString()}</td></tr>`).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
     }
 
-    // ─── Feedback ───
-    async function loadFeedback() {
-      try {
-        const { data, error } = await sb.from('feedback').select('*').order('created_at', { ascending: false });
-        if (error) {
-          document.getElementById('feedback-empty').style.display = 'block';
-          document.getElementById('feedback-table-wrap').style.display = 'none';
-          return;
-        }
-        if (!data || !data.length) {
-          document.getElementById('feedback-empty').innerHTML = '<div class="emoji">💬</div><p>No feedback yet</p>';
-          document.getElementById('feedback-empty').style.display = 'block';
-          return;
-        }
-        document.getElementById('feedback-empty').style.display = 'none';
-        document.getElementById('feedback-table-wrap').style.display = 'table';
-        document.getElementById('feedback-table').innerHTML = data.map(f => `
-          <tr>
-            <td>${f.user_email || f.user_id || '-'}</td>
-            <td>${f.message || f.text || '-'}</td>
-            <td>${timeAgo(f.created_at)}</td>
-            <td><span class="badge ${f.status === 'reviewed' ? 'green' : 'amber'}">${f.status || 'new'}</span></td>
-          </tr>
-        `).join('');
-      } catch (e) {
-        document.getElementById('feedback-empty').style.display = 'block';
-      }
+    // ─── Analytics ───
+    async function loadAnalytics() {
+      if (!allJobs.length) { const { data } = await sb.from('jobs').select('*'); allJobs = data || []; }
+      if (!allUsers.length) { const { data } = await sb.from('profiles').select('*'); allUsers = data || []; }
+      if (!allExpenses.length) { const { data } = await sb.from('expenses').select('*'); allExpenses = data || []; }
+
+      const totalHours = allJobs.reduce((s,j) => s + (j.timer_seconds||0), 0) / 3600;
+      const avgHours = allJobs.filter(j=>j.timer_seconds>0).length ? (totalHours / allJobs.filter(j=>j.timer_seconds>0).length).toFixed(1) : '0';
+      const withTimer = allJobs.filter(j => j.timer_seconds > 0).length;
+      const timerRate = allJobs.length ? Math.round(withTimer / allJobs.length * 100) : 0;
+      const completionRate = allJobs.length ? Math.round(allJobs.filter(j=>['completed','invoiced','paid'].includes(j.status)).length / allJobs.length * 100) : 0;
+
+      document.getElementById('analytics-stats').innerHTML = `
+        <div class="stat-card"><div class="stat-label">Total Hours Tracked</div><div class="stat-value cyan">${totalHours.toFixed(0)}h</div></div>
+        <div class="stat-card"><div class="stat-label">Avg Hours / Job</div><div class="stat-value orange">${avgHours}h</div></div>
+        <div class="stat-card"><div class="stat-label">Timer Usage</div><div class="stat-value blue">${timerRate}%</div><div class="stat-sub">${withTimer} of ${allJobs.length} jobs</div></div>
+        <div class="stat-card"><div class="stat-label">Completion Rate</div><div class="stat-value green">${completionRate}%</div></div>`;
+
+      // Engagement table
+      const invoiceRate = allJobs.length ? Math.round(allJobs.filter(j=>['invoiced','paid'].includes(j.status)).length / allJobs.length * 100) : 0;
+      const payRate = allJobs.filter(j=>['invoiced','paid'].includes(j.status)).length ? Math.round(allJobs.filter(j=>j.status==='paid').length / allJobs.filter(j=>['invoiced','paid'].includes(j.status)).length * 100) : 0;
+      document.getElementById('engagement-table').innerHTML = `
+        <tr><td style="font-weight:600">Job Completion Rate</td><td>${completionRate}%</td><td style="color:var(--text-muted)">Jobs reaching Completed+</td></tr>
+        <tr><td style="font-weight:600">Invoice Rate</td><td>${invoiceRate}%</td><td style="color:var(--text-muted)">Jobs that get invoiced</td></tr>
+        <tr><td style="font-weight:600">Payment Rate</td><td>${payRate}%</td><td style="color:var(--text-muted)">Invoiced jobs marked paid</td></tr>
+        <tr><td style="font-weight:600">Timer Usage</td><td>${timerRate}%</td><td style="color:var(--text-muted)">Jobs using built-in timer</td></tr>
+        <tr><td style="font-weight:600">Total Clients</td><td>${allClients.length || '-'}</td><td style="color:var(--text-muted)">Across all users</td></tr>
+        <tr><td style="font-weight:600">Total Expenses Logged</td><td>${allExpenses.length}</td><td style="color:var(--text-muted)">$${allExpenses.reduce((s,e)=>s+Number(e.amount||0),0).toLocaleString()} total</td></tr>`;
+
+      // Status chart
+      const statusData = { Quoted: 0, 'In Progress': 0, Completed: 0, Invoiced: 0, Paid: 0 };
+      const statusMap = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
+      allJobs.forEach(j => { if (statusMap[j.status]) statusData[statusMap[j.status]]++; });
+      if (charts['chart-status']) charts['chart-status'].destroy();
+      charts['chart-status'] = new Chart(document.getElementById('chart-status'), {
+        type: 'doughnut',
+        data: { labels: Object.keys(statusData), datasets: [{ data: Object.values(statusData), backgroundColor: ['#3B82F6','#e67e22','#10B981','#8B5CF6','#22C55E'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 11 }, padding: 12 } } } }
+      });
+
+      // Industries chart
+      const industries = {};
+      allJobs.forEach(j => { industries[j.job_type] = (industries[j.job_type]||0) + 1; });
+      const topInd = Object.entries(industries).sort((a,b) => b[1]-a[1]).slice(0, 8);
+      if (charts['chart-industries']) charts['chart-industries'].destroy();
+      charts['chart-industries'] = new Chart(document.getElementById('chart-industries'), {
+        type: 'bar',
+        data: { labels: topInd.map(i=>i[0]), datasets: [{ data: topInd.map(i=>i[1]), backgroundColor: '#8B5CF699', borderRadius: 4 }] },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#64748B', stepSize: 1 }, grid: { color: '#1E293B' }, beginAtZero: true }, y: { ticks: { color: '#94A3B8', font: { size: 11 } }, grid: { display: false } } }, plugins: { legend: { display: false } } }
+      });
     }
 
     // ─── Dev Notes ───
     async function loadNotes() {
       try {
         const { data, error } = await sb.from('dev_notes').select('*').order('created_at', { ascending: false });
-        if (error) {
-          document.getElementById('notes-open').innerHTML = '<div class="card"><div class="empty-state"><div class="emoji">📝</div><p>Run "Create Admin Tables" in Settings first</p></div></div>';
-          document.getElementById('notes-done').innerHTML = '';
-          return;
-        }
-
+        if (error) { document.getElementById('notes-open').innerHTML = '<div class="card"><div class="empty-state"><div class="emoji">📝</div><p>Create a dev_notes table in Supabase to use this feature</p></div></div>'; document.getElementById('notes-done').innerHTML = ''; return; }
         const notes = data || [];
         const open = notes.filter(n => n.status !== 'done');
         const done = notes.filter(n => n.status === 'done');
-
-        document.getElementById('notes-open').innerHTML = open.length ? open.map(noteCard).join('') :
-          '<div class="card"><div class="empty-state"><div class="emoji">✅</div><p>All caught up!</p></div></div>';
-
-        document.getElementById('notes-done').innerHTML = done.length ?
-          `<div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Done</div>` +
-          done.map(n => noteCard(n, true)).join('') : '';
-      } catch (e) {
-        console.error(e);
-      }
+        document.getElementById('notes-open').innerHTML = open.length ? open.map(n => noteCard(n)).join('') : '<div class="card"><div class="empty-state"><div class="emoji">✅</div><p>All caught up!</p></div></div>';
+        document.getElementById('notes-done').innerHTML = done.length ? `<div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Done</div>` + done.map(n => noteCard(n, true)).join('') : '';
+      } catch(e) { console.error(e); }
     }
 
     function noteCard(n, isDone = false) {
-      return `<div class="card" style="${isDone ? 'opacity:0.5;' : ''}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-          <p style="font-size:14px;line-height:1.6;${isDone ? 'text-decoration:line-through;' : ''}">${n.text || n.note}</p>
-          <div style="display:flex;gap:6px;flex-shrink:0;margin-left:16px;">
-            ${!isDone ? `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','done')">Done</button>` :
-              `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','open')">Reopen</button>`}
-            <button class="btn btn-sm btn-ghost" style="color:var(--red)" onclick="deleteNote('${n.id}')">Delete</button>
-          </div>
-        </div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">${timeAgo(n.created_at)}</div>
-      </div>`;
+      return `<div class="card" style="${isDone?'opacity:0.4;':''}"><div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <p style="font-size:13px;line-height:1.6;${isDone?'text-decoration:line-through;':''}">${n.text||n.note}</p>
+        <div style="display:flex;gap:6px;flex-shrink:0;margin-left:16px;">
+          ${!isDone ? `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','done')">Done</button>` : `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','open')">Reopen</button>`}
+          <button class="btn btn-sm btn-ghost" style="color:var(--red)" onclick="deleteNote('${n.id}')">Delete</button>
+        </div></div><div style="font-size:10px;color:var(--text-muted);margin-top:6px;">${timeAgo(n.created_at)}</div></div>`;
     }
 
     function showAddNote() { document.getElementById('add-note-card').style.display = 'block'; document.getElementById('note-text').focus(); }
     function hideAddNote() { document.getElementById('add-note-card').style.display = 'none'; document.getElementById('note-text').value = ''; }
-
-    async function saveNote() {
-      const text = document.getElementById('note-text').value.trim();
-      if (!text) return;
-      await sb.from('dev_notes').insert({ text, status: 'open' });
-      hideAddNote();
-      toast('Note saved');
-      loadNotes();
-    }
-
-    async function markNote(id, status) {
-      await sb.from('dev_notes').update({ status }).eq('id', id);
-      loadNotes();
-    }
-
-    async function deleteNote(id) {
-      if (!confirm('Delete this note?')) return;
-      await sb.from('dev_notes').delete().eq('id', id);
-      toast('Note deleted');
-      loadNotes();
-    }
+    async function saveNote() { const t = document.getElementById('note-text').value.trim(); if (!t) return; await sb.from('dev_notes').insert({ text: t, status: 'open' }); hideAddNote(); toast('Note saved'); loadNotes(); }
+    async function markNote(id, status) { await sb.from('dev_notes').update({ status }).eq('id', id); loadNotes(); }
+    async function deleteNote(id) { if (!confirm('Delete?')) return; await sb.from('dev_notes').delete().eq('id', id); toast('Deleted'); loadNotes(); }
 
     // ─── Settings ───
     async function loadSettings() {
       document.getElementById('sb-url').textContent = SUPABASE_URL;
       document.getElementById('sb-key').textContent = SUPABASE_ANON_KEY.slice(0, 20) + '...' + SUPABASE_ANON_KEY.slice(-10);
-
       try {
-        const { count: profileCount } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+        await sb.from('profiles').select('*', { count: 'exact', head: true });
         document.getElementById('sb-status').innerHTML = '<span class="badge green">Connected</span>';
-
-        const tables = ['profiles', 'jobs', 'expenses', 'wages', 'clients'];
+        const tables = ['profiles','jobs','expenses','wages','clients','dev_notes'];
         let html = '<table>';
         for (const t of tables) {
-          try {
-            const { count } = await sb.from(t).select('*', { count: 'exact', head: true });
-            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>${count} rows</td><td><span class="badge green">OK</span></td></tr>`;
-          } catch {
-            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>-</td><td><span class="badge red">Error</span></td></tr>`;
-          }
-        }
-
-        // Check admin tables
-        for (const t of ['dev_notes']) {
-          try {
-            const { count, error } = await sb.from(t).select('*', { count: 'exact', head: true });
-            if (error) throw error;
-            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>${count} rows</td><td><span class="badge green">OK</span></td></tr>`;
-          } catch {
-            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>-</td><td><span class="badge amber">Not created</span></td></tr>`;
-          }
+          try { const { count, error } = await sb.from(t).select('*', { count: 'exact', head: true }); if (error) throw error; html += `<tr><td style="font-weight:600;width:120px;">${t}</td><td>${count} rows</td><td><span class="badge green">OK</span></td></tr>`; }
+          catch { html += `<tr><td style="font-weight:600;width:120px;">${t}</td><td>-</td><td><span class="badge amber">Missing</span></td></tr>`; }
         }
         html += '</table>';
         document.getElementById('db-tables').innerHTML = html;
-      } catch (e) {
-        document.getElementById('sb-status').innerHTML = '<span class="badge red">Error</span>';
-      }
-    }
-
-    async function createAdminTables() {
-      if (!confirm('Create dev_notes table?')) return;
-      try {
-        const { error } = await sb.rpc('exec_sql', {
-          query: `
-            CREATE TABLE IF NOT EXISTS public.dev_notes (
-              id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-              text text NOT NULL,
-              status text DEFAULT 'open',
-              created_at timestamptz DEFAULT now()
-            );
-            ALTER TABLE public.dev_notes ENABLE ROW LEVEL SECURITY;
-            CREATE POLICY "Allow all for authenticated" ON public.dev_notes FOR ALL USING (auth.role() = 'authenticated');
-          `
-        });
-        if (error) {
-          toast('You may need to create this table manually in Supabase SQL Editor', true);
-        } else {
-          toast('Table created');
-        }
-        loadSettings();
-      } catch (e) {
-        toast('Create table manually in Supabase SQL Editor', true);
-      }
+      } catch { document.getElementById('sb-status').innerHTML = '<span class="badge red">Error</span>'; }
     }
 
     // ─── Utils ───
     function timeAgo(dateStr) {
       if (!dateStr) return '-';
-      const d = new Date(dateStr);
-      const now = new Date();
-      const diff = Math.floor((now - d) / 1000);
+      const diff = Math.floor((new Date() - new Date(dateStr)) / 1000);
       if (diff < 60) return 'just now';
       if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
       if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
       if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
-      return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+      return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
     }
 
     function toast(msg, isError = false) {
@@ -1326,7 +1253,6 @@
       setTimeout(() => t.className = 'toast', 2500);
     }
 
-    // ─── Init ───
     checkAuth();
   </script>
 </body>
