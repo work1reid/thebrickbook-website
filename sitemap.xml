@@ -1,51 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://thebrickbook.com/</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/blog</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/blog/how-to-calculate-real-hourly-rate</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/blog/free-invoice-template-abn-gst-australia</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/blog/tradie-apps-compared-2026</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/support</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/privacy</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://thebrickbook.com/terms</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
+  <url><loc>https://thebrickbook.com/</loc><lastmod>2026-03-26</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://thebrickbook.com/invoice-generator</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog</loc><lastmod>2026-03-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Blog posts -->
+  <url><loc>https://thebrickbook.com/blog/how-to-calculate-real-hourly-rate</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-invoice-template-abn-gst-australia</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/tradie-apps-compared-2026</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/how-much-should-tradies-charge-per-hour</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/tradie-expenses-you-forget-to-track</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/how-to-quote-a-job-tradie</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thebrickbook.com/blog/gst-guide-sole-traders-australia</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+
+  <!-- Comparison pages -->
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-bookipi</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-xero</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-tradify</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-servicem8</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-invoice2go</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/thebrickbook-vs-myob</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Template pages -->
+  <url><loc>https://thebrickbook.com/blog/free-tradie-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-landscaping-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-cleaning-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-photography-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-plumbing-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thebrickbook.com/blog/free-electrical-invoice-template</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Static pages -->
+  <url><loc>https://thebrickbook.com/support</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://thebrickbook.com/privacy</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://thebrickbook.com/terms</loc><lastmod>2026-03-26</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>
