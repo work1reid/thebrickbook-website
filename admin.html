@@ -188,7 +188,7 @@
       <div class="nav-section" onclick="toggleGroup(this)">Data <span class="chev">▾</span></div>
       <div class="nav-group">
         <button class="nav-item" data-page="jobs"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Jobs<span class="ndot"></span></button>
-        <button class="nav-item" data-page="revenue"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Revenue<span class="ndot"></span></button>
+        <button class="nav-item" data-page="health"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Platform Health<span class="ndot"></span></button>
       </div>
 
       <div class="nav-section" onclick="toggleGroup(this)">Platform <span class="chev">▾</span></div>
@@ -299,14 +299,25 @@
         <div style="text-align:center;padding:12px" id="jobs-pagination"></div>
       </div>
 
-      <!-- ═══ REVENUE ═══ -->
-      <div id="page-revenue" class="page">
-        <div class="page-header"><div><div class="page-title">Revenue</div><div class="page-subtitle">User financial activity (not your platform revenue)</div></div></div>
-        <div class="stats-grid" id="revenue-stats"></div>
-        <div class="card"><div class="card-header"><div class="card-title">Revenue Over Time</div></div><div class="chart-container"><canvas id="chart-revenue"></canvas></div></div>
-        <div class="grid-2">
-          <div class="card"><div class="card-header"><div class="card-title">Top Job Types</div></div><table><thead><tr><th>Type</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="top-jobs-table"></tbody></table></div>
-          <div class="card"><div class="card-header"><div class="card-title">Expense Categories</div></div><table><thead><tr><th>Category</th><th>Count</th><th>Total</th></tr></thead><tbody id="expense-cats-table"></tbody></table></div>
+      <!-- ═══ PLATFORM HEALTH ═══ -->
+      <div id="page-health" class="page">
+        <div class="page-header"><div><div class="page-title">Platform Health</div><div class="page-subtitle">The 3 numbers that matter</div></div></div>
+
+        <div class="grid-3" style="margin-bottom:20px" id="health-stats"></div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title">Value Created Over Time</div><span style="font-size:11px;color:var(--text-muted)">Total $ invoiced through TheBrickBook</span></div>
+          <div class="chart-container"><canvas id="chart-health"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Use this number everywhere</div></div>
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7">
+            When your "Value Created" number grows, put it on your landing page, Product Hunt, socials:<br>
+            <strong style="color:var(--green);font-size:16px" id="health-headline">"TheBrickBook has helped tradies track $0 in jobs"</strong><br><br>
+            <span style="color:var(--text-muted)">That's social proof. That's your story. Click to copy:</span>
+            <button class="btn btn-sm btn-ghost" style="margin-left:8px" onclick="copyHealthLine()">Copy</button>
+          </p>
         </div>
       </div>
 
@@ -354,7 +365,7 @@
     function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open')}
     document.querySelectorAll('.nav-item[data-page]').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));btn.classList.add('active');document.getElementById('page-'+btn.dataset.page).classList.add('active');if(window.innerWidth<=780)toggleSidebar();loaders[btn.dataset.page]?.()})});
     function navTo(p){document.querySelector(`.nav-item[data-page="${p}"]`)?.click()}
-    const loaders={dashboard:loadDashboard,users:loadUsers,jobs:loadJobs,feedback:loadFeedback,revenue:loadRevenue,devnotes:loadNotes,settings:loadSettings};
+    const loaders={dashboard:loadDashboard,users:loadUsers,jobs:loadJobs,feedback:loadFeedback,health:loadHealth,devnotes:loadNotes,settings:loadSettings};
 
     // ─── DASHBOARD ───
     async function loadDashboard(){
@@ -560,29 +571,50 @@
     }
     function filterJobs(q){q=q.toLowerCase();jobsPage=0;renderJobsPage(allJobs.filter(j=>j.client_name.toLowerCase().includes(q)||j.job_type.toLowerCase().includes(q)))}
 
-    // ─── REVENUE ───
-    async function loadRevenue(){
-      if(!allJobs.length){const{data}=await sb.from('jobs').select('*');allJobs=data||[]}
-      if(!allExpenses.length){const{data}=await sb.from('expenses').select('*');allExpenses=data||[]}
-      if(!allWages.length){const{data}=await sb.from('wages').select('*');allWages=data||[]}
-      const paid=allJobs.filter(j=>j.status==='paid');const inv=allJobs.filter(j=>['invoiced','paid'].includes(j.status));
-      const paidRev=paid.reduce((s,j)=>s+Number(j.invoice_amount||0),0);const invRev=inv.reduce((s,j)=>s+Number(j.invoice_amount||0),0);
-      const totalExp=allExpenses.reduce((s,e)=>s+Number(e.amount||0),0);const totalWg=allWages.reduce((s,w)=>s+Number(w.amount||0),0);
-      const ic=(cls,paths)=>`<div class="stat-icon ${cls}"><svg viewBox="0 0 24 24">${paths}</svg></div>`;
-      document.getElementById('revenue-stats').innerHTML=`
-        <div class="stat-card"><div><div class="stat-label">Paid Revenue</div><div class="stat-value green">$${paidRev.toLocaleString()}</div></div>${ic('green','<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>')}</div>
-        <div class="stat-card"><div><div class="stat-label">Total Invoiced</div><div class="stat-value">$${invRev.toLocaleString()}</div></div>${ic('purple','<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>')}</div>
-        <div class="stat-card"><div><div class="stat-label">User Expenses</div><div class="stat-value">$${totalExp.toLocaleString()}</div></div>${ic('orange','<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>')}</div>
-        <div class="stat-card"><div><div class="stat-label">User Wages</div><div class="stat-value">$${totalWg.toLocaleString()}</div></div>${ic('cyan','<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/>')}</div>`;
-      // Chart
-      const monthly={};inv.forEach(j=>{const d=new Date(j.invoiced_at||j.created_at);const k=d.toLocaleDateString('en-AU',{month:'short',year:'2-digit'});monthly[k]=(monthly[k]||0)+Number(j.invoice_amount||0)});
-      if(charts['chart-revenue'])charts['chart-revenue'].destroy();
-      if(Object.keys(monthly).length){charts['chart-revenue']=new Chart(document.getElementById('chart-revenue'),{type:'line',data:{labels:Object.keys(monthly),datasets:[{data:Object.values(monthly),borderColor:'#10B981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.3,borderWidth:2,pointRadius:4,pointBackgroundColor:'#10B981'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:'#64748B'},grid:{display:false}},y:{ticks:{color:'#64748B',callback:v=>'$'+v.toLocaleString()},grid:{color:'#1E293B'},beginAtZero:true}},plugins:{legend:{display:false}}}})}
-      // Tables
-      const jt={};allJobs.forEach(j=>{if(!jt[j.job_type])jt[j.job_type]={c:0,r:0};jt[j.job_type].c++;jt[j.job_type].r+=Number(j.invoice_amount||0)});
-      document.getElementById('top-jobs-table').innerHTML=Object.entries(jt).sort((a,b)=>b[1].r-a[1].r).slice(0,10).map(([t,d])=>`<tr><td style="font-weight:600;color:var(--text)">${esc(t)}</td><td>${d.c}</td><td>$${d.r.toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
-      const cats={};allExpenses.forEach(e=>{if(!cats[e.category])cats[e.category]={c:0,t:0};cats[e.category].c++;cats[e.category].t+=Number(e.amount||0)});
-      document.getElementById('expense-cats-table').innerHTML=Object.entries(cats).sort((a,b)=>b[1].t-a[1].t).map(([c,d])=>`<tr><td style="font-weight:600;color:var(--text);text-transform:capitalize">${esc(c)}</td><td>${d.c}</td><td>$${d.t.toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
+    // ─── PLATFORM HEALTH ───
+    async function loadHealth() {
+      if (!allJobs.length) { const { data } = await sb.from('jobs').select('*'); allJobs = data || []; }
+      if (!allUsers.length) { const { data } = await sb.from('profiles').select('*'); allUsers = data || []; }
+
+      const d7 = new Date(); d7.setDate(d7.getDate() - 7);
+      const activeThisWeek = new Set(allJobs.filter(j => new Date(j.created_at) > d7).map(j => j.user_id)).size;
+      const totalInvoiced = allJobs.filter(j => ['invoiced', 'paid'].includes(j.status)).reduce((s, j) => s + Number(j.invoice_amount || 0), 0);
+
+      const ic = (cls, paths) => `<div class="stat-icon ${cls}"><svg viewBox="0 0 24 24">${paths}</svg></div>`;
+      document.getElementById('health-stats').innerHTML = `
+        <div class="stat-card"><div><div class="stat-label">Total Users</div><div class="stat-value" style="font-size:36px">${allUsers.length}</div><div class="stat-sub">Are people signing up?</div></div>${ic('blue', '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/>')}</div>
+        <div class="stat-card"><div><div class="stat-label">Active This Week</div><div class="stat-value ${activeThisWeek > 0 ? 'green' : 'red'}" style="font-size:36px">${activeThisWeek}</div><div class="stat-sub">Are they coming back?</div></div>${ic('green', '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>')}</div>
+        <div class="stat-card"><div><div class="stat-label">Value Created</div><div class="stat-value green" style="font-size:36px">$${totalInvoiced.toLocaleString()}</div><div class="stat-sub">Total invoiced through TheBrickBook</div></div>${ic('purple', '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>')}</div>`;
+
+      document.getElementById('health-headline').textContent = `"TheBrickBook has helped tradies track $${totalInvoiced.toLocaleString()} in jobs"`;
+
+      // Value created over time chart
+      const monthly = {};
+      allJobs.filter(j => ['invoiced', 'paid'].includes(j.status)).forEach(j => {
+        const d = new Date(j.invoiced_at || j.created_at);
+        const k = d.toLocaleDateString('en-AU', { month: 'short', year: '2-digit' });
+        monthly[k] = (monthly[k] || 0) + Number(j.invoice_amount || 0);
+      });
+
+      // Make cumulative
+      const labels = Object.keys(monthly);
+      const cumulative = [];
+      let running = 0;
+      Object.values(monthly).forEach(v => { running += v; cumulative.push(running); });
+
+      if (charts['chart-health']) charts['chart-health'].destroy();
+      if (labels.length) {
+        charts['chart-health'] = new Chart(document.getElementById('chart-health'), {
+          type: 'line',
+          data: { labels, datasets: [{ data: cumulative, borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,.08)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#10B981' }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#64748B' }, grid: { display: false } }, y: { ticks: { color: '#64748B', callback: v => '$' + v.toLocaleString() }, grid: { color: '#1E293B' }, beginAtZero: true } }, plugins: { legend: { display: false } } }
+        });
+      }
+    }
+
+    function copyHealthLine() {
+      const text = document.getElementById('health-headline').textContent.replace(/"/g, '');
+      navigator.clipboard.writeText(text).then(() => toast('Copied!')).catch(() => toast('Failed to copy', true));
     }
 
     // ─── DEV NOTES ───
