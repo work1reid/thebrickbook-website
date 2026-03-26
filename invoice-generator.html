@@ -1308,6 +1308,20 @@
     addLineItem();
 
     // ─── Update preview ───
+    // ─── LocalStorage: save/restore business details ───
+    const BIZ_FIELDS = ['bizName', 'bizABN', 'bizAddress', 'bizPhone', 'bizEmail', 'bankName', 'accountName', 'bsb', 'accountNumber'];
+
+    function saveBusinessDetails() {
+      const data = {};
+      BIZ_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.value;
+      });
+      try {
+        localStorage.setItem('tbb_invoice_biz', JSON.stringify(data));
+      } catch (e) { /* ignore */ }
+    }
+
     function updatePreview() {
       const gstOn = document.getElementById('gstToggle').checked;
 
@@ -1406,7 +1420,7 @@
     // ─── Download PDF ───
     function downloadPDF() {
       const preview = document.getElementById('invoicePreview');
-      const invoiceNum = document.getElementById('invoiceNumber').value || 'INV-001';
+      const invoiceNum = document.getElementById('invNumber').value || 'INV-001';
       const clientName = document.getElementById('clientName').value || 'Invoice';
 
       const opt = {
@@ -1420,18 +1434,7 @@
       html2pdf().set(opt).from(preview).save();
     }
 
-    // ─── LocalStorage: save/restore business details ───
-    const BIZ_FIELDS = ['bizName', 'bizABN', 'bizAddress', 'bizPhone', 'bizEmail', 'bankName', 'accountName', 'bsb', 'accountNumber'];
-
-    function saveBusinessDetails() {
-      const data = {};
-      BIZ_FIELDS.forEach(id => {
-        data[id] = document.getElementById(id).value;
-      });
-      try {
-        localStorage.setItem('tbb_invoice_biz', JSON.stringify(data));
-      } catch (e) { /* ignore */ }
-    }
+    // BIZ_FIELDS and saveBusinessDetails moved above updatePreview — see top of script
 
     function restoreBusinessDetails() {
       try {
