@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="shortcut icon" href="assets/favicon.png">
   <link rel="canonical" href="https://thebrickbook.com/invoice-generator">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-53PS5YF9QR"></script>
@@ -1404,7 +1405,19 @@
 
     // ─── Download PDF ───
     function downloadPDF() {
-      window.print();
+      const preview = document.getElementById('invoicePreview');
+      const invoiceNum = document.getElementById('invoiceNumber').value || 'INV-001';
+      const clientName = document.getElementById('clientName').value || 'Invoice';
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `${invoiceNum}_${clientName.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(preview).save();
     }
 
     // ─── LocalStorage: save/restore business details ───
