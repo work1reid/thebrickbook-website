@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — TheBrickBook | Free Job Tracker for Tradies</title>
+  <meta name="description" content="TheBrickBook is free for solo tradies. Track up to 5 jobs, send unlimited invoices, and see your real hourly rate. Upgrade to Pro for $9.99/month.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="shortcut icon" href="assets/favicon.png">
+  <link rel="canonical" href="https://thebrickbook.com/pricing">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53PS5YF9QR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-53PS5YF9QR');
+  </script>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pricing — TheBrickBook | Free Job Tracker for Tradies">
+  <meta property="og:description" content="TheBrickBook is free for solo tradies. Track up to 5 jobs, send unlimited invoices, and see your real hourly rate. Upgrade to Pro for $9.99/month.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thebrickbook.com/pricing">
+  <meta property="og:image" content="https://thebrickbook.com/assets/icon.png">
+  <meta property="og:site_name" content="TheBrickBook">
+  <meta property="og:locale" content="en_AU">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pricing — TheBrickBook | Free Job Tracker for Tradies">
+  <meta name="twitter:description" content="TheBrickBook is free for solo tradies. Track up to 5 jobs, send unlimited invoices, and see your real hourly rate. Upgrade to Pro for $9.99/month.">
+  <meta name="twitter:image" content="https://thebrickbook.com/assets/icon.png">
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the free tier actually free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. No trial, no credit card, no catch. Use it forever."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I upgrade later?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Start free, upgrade to Pro anytime from the app when you need more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to my data if I downgrade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nothing. Your data stays. You just can't create more than 5 active jobs on the free tier."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer refunds?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Contact us within 14 days for a full refund, no questions asked."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-warm: #faf8f5;
+      --surface: #f3f0eb;
+      --surface-border: #e0dbd3;
+      --orange: #d35400;
+      --orange-light: #e67e22;
+      --orange-bg: rgba(211, 84, 0, 0.08);
+      --green: #1e8449;
+      --text: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #666666;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+    }
+
+    .nav-logo span {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-links a.active { color: var(--orange); }
+
+    .nav-cta {
+      background: var(--orange) !important;
+      color: #fff !important;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(211, 84, 0, 0.25);
+    }
+
+    /* ─── Hero ─── */
+    .pricing-hero {
+      padding: 140px 32px 60px;
+      text-align: center;
+      background: var(--bg);
+    }
+
+    .pricing-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 80px);
+      letter-spacing: 3px;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 16px;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+
+    .pricing-hero p {
+      font-size: 20px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+
+    /* ─── Pricing Cards ─── */
+    .pricing-section {
+      padding: 40px 32px 80px;
+      background: var(--bg);
+    }
+
+    .pricing-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .pricing-card {
+      background: var(--bg-warm);
+      border: 2px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 40px 32px;
+      position: relative;
+    }
+
+    .pricing-card.pro {
+      border-color: var(--orange);
+      box-shadow: 0 8px 32px rgba(211, 84, 0, 0.12);
+      transform: scale(1.03);
+    }
+
+    .pricing-card-name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .pricing-card.pro .pricing-card-name {
+      color: var(--orange);
+    }
+
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 56px;
+      letter-spacing: 1px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price span {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0;
+    }
+
+    .pricing-annual {
+      font-size: 15px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .pricing-annual .save-badge {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .pricing-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--text);
+      padding: 7px 0;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .pricing-features li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-top: 1px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .pricing-features .divider {
+      padding: 0;
+      margin: 8px 0;
+    }
+
+    .pricing-features .divider::before {
+      display: none;
+    }
+
+    .pricing-features .plus-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 12px 0 4px;
+    }
+
+    .pricing-features .plus-label::before {
+      display: none;
+    }
+
+    .pricing-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .pricing-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .pricing-btn-free {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .pricing-btn-free:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .pricing-btn-pro {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .pricing-btn-pro:hover {
+      box-shadow: 0 6px 20px rgba(211, 84, 0, 0.3);
+    }
+
+    /* ─── FAQ ─── */
+    .pricing-faq {
+      padding: 80px 32px;
+      background: var(--bg-warm);
+    }
+
+    .pricing-faq h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 52px);
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 48px;
+      color: var(--text);
+    }
+
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .faq-item {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .faq-question {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .faq-answer {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* ─── Comparison ─── */
+    .comparison {
+      padding: 80px 32px;
+      background: var(--bg);
+    }
+
+    .comparison h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 48px;
+      color: var(--text);
+    }
+
+    .comparison-grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .comparison-item {
+      text-align: center;
+      padding: 24px 12px;
+      border-radius: 12px;
+      background: var(--bg-warm);
+      border: 1px solid var(--surface-border);
+    }
+
+    .comparison-item.highlight {
+      border-color: var(--orange);
+      background: var(--orange-bg);
+    }
+
+    .comparison-item.highlight-free {
+      border-color: var(--green);
+      background: rgba(30, 132, 73, 0.06);
+    }
+
+    .comparison-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .comparison-price {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+
+    .comparison-item.highlight .comparison-price {
+      color: var(--orange);
+    }
+
+    .comparison-item.highlight-free .comparison-price {
+      color: var(--green);
+    }
+
+    .comparison-per {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .strikethrough {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 40px 32px;
+      border-top: 1px solid var(--surface-border);
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-aus {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta):not(.nav-support) { display: none; }
+
+      .pricing-hero { padding: 110px 20px 40px; }
+
+      .pricing-section { padding: 20px 20px 60px; }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        max-width: 440px;
+      }
+
+      .pricing-card.pro {
+        transform: none;
+        order: -1;
+      }
+
+      .pricing-faq { padding: 60px 20px; }
+
+      .comparison { padding: 60px 20px; }
+
+      .comparison-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .comparison-item:nth-child(4),
+      .comparison-item:nth-child(5) {
+        grid-column: span 1;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .comparison-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .comparison-item:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="assets/icon.png" alt="TheBrickBook">
+      <span>THEBRICKBOOK</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#how-it-works">How it Works</a>
+      <a href="blog/">Blog</a>
+      <a href="pricing" class="active">Pricing</a>
+      <a href="invoice-generator">Invoice Generator</a>
+      <a href="https://apps.apple.com/app/thebrickbook" class="nav-cta">Download</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pricing-hero">
+    <h1>SIMPLE PRICING</h1>
+    <p>Start free. Upgrade when you're ready.</p>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="pricing-section">
+    <div class="pricing-grid">
+
+      <!-- Free Card -->
+      <div class="pricing-card reveal">
+        <div class="pricing-card-name">FREE</div>
+        <div class="pricing-price">$0 <span>/month</span></div>
+        <p class="pricing-subtitle">Everything a sole trader needs to get started</p>
+        <ul class="pricing-features">
+          <li>Up to 5 active jobs</li>
+          <li>Unlimited invoices</li>
+          <li>Built-in job timer</li>
+          <li>Real hourly rate calculator</li>
+          <li>Expense &amp; wage tracking</li>
+          <li>Client management</li>
+          <li>GST calculations</li>
+          <li>Cloud sync</li>
+        </ul>
+        <a href="https://apps.apple.com/app/thebrickbook" class="pricing-btn pricing-btn-free">Download Free</a>
+      </div>
+
+      <!-- Pro Card -->
+      <div class="pricing-card pro reveal">
+        <div class="pricing-card-name">PRO</div>
+        <div class="pricing-price">$9.99 <span>/month</span></div>
+        <p class="pricing-annual">or $79/year <span class="save-badge">SAVE 34%</span></p>
+        <p class="pricing-subtitle">For tradies ready to scale</p>
+        <ul class="pricing-features">
+          <li>Everything in Free, plus:</li>
+          <li class="plus-label">Pro features</li>
+          <li>Unlimited active jobs</li>
+          <li>Custom invoice branding (logo &amp; colours)</li>
+          <li>Remove TheBrickBook footer from invoices</li>
+          <li>Expense reports &amp; tax exports</li>
+          <li>Invoice payment tracking &amp; reminders</li>
+          <li>Recurring jobs</li>
+          <li>Job photos (before/after)</li>
+          <li>CSV &amp; PDF data export</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="https://apps.apple.com/app/thebrickbook" class="pricing-btn pricing-btn-pro">Start Free, Upgrade Later</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pricing-faq">
+    <h2>FREQUENTLY ASKED QUESTIONS</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-question">Is the free tier actually free?</div>
+        <div class="faq-answer">Yes. No trial, no credit card, no catch. Use it forever.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Can I upgrade later?</div>
+        <div class="faq-answer">Yes. Start free, upgrade to Pro anytime from the app when you need more.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">What happens to my data if I downgrade?</div>
+        <div class="faq-answer">Nothing. Your data stays. You just can't create more than 5 active jobs on the free tier.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Do you offer refunds?</div>
+        <div class="faq-answer">Yes. Contact us within 14 days for a full refund, no questions asked.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="comparison">
+    <h2>STILL CHEAPER THAN THE ALTERNATIVES</h2>
+    <div class="comparison-grid">
+      <div class="comparison-item">
+        <div class="comparison-name">Xero</div>
+        <div class="comparison-price strikethrough">$35</div>
+        <div class="comparison-per">/month</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-name">Tradify</div>
+        <div class="comparison-price strikethrough">$50</div>
+        <div class="comparison-per">/month</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-name">ServiceM8</div>
+        <div class="comparison-price strikethrough">$29</div>
+        <div class="comparison-per">/month</div>
+      </div>
+      <div class="comparison-item highlight">
+        <div class="comparison-name">TheBrickBook Pro</div>
+        <div class="comparison-price">$9.99</div>
+        <div class="comparison-per">/month</div>
+      </div>
+      <div class="comparison-item highlight-free">
+        <div class="comparison-name">TheBrickBook Free</div>
+        <div class="comparison-price">$0</div>
+        <div class="comparison-per">forever</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="blog/">Blog</a>
+        <a href="privacy">Privacy Policy</a>
+        <a href="support">Support</a>
+        <a href="terms">Terms</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 TheBrickBook</div>
+      <div class="footer-aus">Made in Australia</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
