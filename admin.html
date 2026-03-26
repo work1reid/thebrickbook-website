@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheBrickBook Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #080E1A;
+      --bg-card: #0D1526;
+      --bg-input: #111B2E;
+      --border: #1E293B;
+      --border-hover: #334155;
+      --orange: #d35400;
+      --orange-light: #e67e22;
+      --orange-bg: rgba(211, 84, 0, 0.12);
+      --green: #10B981;
+      --green-bg: rgba(16, 185, 129, 0.12);
+      --red: #EF4444;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --blue: #3B82F6;
+      --blue-bg: rgba(59, 130, 246, 0.12);
+      --amber: #F59E0B;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      --purple: #8B5CF6;
+      --purple-bg: rgba(139, 92, 246, 0.12);
+      --text: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --sidebar-w: 200px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 50;
+    }
+
+    .sidebar-brand {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-brand h1 {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--orange);
+    }
+
+    .sidebar-brand span {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-section {
+      padding: 8px 12px 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .nav-item.active { color: var(--orange); background: var(--orange-bg); border-right: 2px solid var(--orange); }
+    .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar-footer .user-email {
+      font-size: 11px;
+      color: var(--text-muted);
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 8px;
+      background: var(--red-bg);
+      color: var(--red);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-logout:hover { background: rgba(239, 68, 68, 0.2); }
+
+    /* ─── Main ─── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 28px 32px;
+      max-width: 1200px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ─── Stats Grid ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .stat-value.green { color: var(--green); }
+    .stat-value.orange { color: var(--orange); }
+    .stat-value.blue { color: var(--blue); }
+    .stat-value.purple { color: var(--purple); }
+
+    /* ─── Cards ─── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* ─── Tables ─── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ─── Badges ─── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge.green { background: var(--green-bg); color: var(--green); }
+    .badge.orange { background: var(--orange-bg); color: var(--orange-light); }
+    .badge.blue { background: var(--blue-bg); color: var(--blue); }
+    .badge.red { background: var(--red-bg); color: var(--red); }
+    .badge.purple { background: var(--purple-bg); color: var(--purple); }
+    .badge.amber { background: var(--amber-bg); color: var(--amber); }
+
+    /* ─── Buttons ─── */
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+
+    .btn-primary { background: var(--orange); color: #fff; }
+    .btn-primary:hover { background: var(--orange-light); }
+    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
+    .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+
+    /* ─── Search ─── */
+    .search-input {
+      width: 100%;
+      max-width: 320px;
+      padding: 10px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--orange); }
+
+    /* ─── Charts ─── */
+    .chart-container {
+      position: relative;
+      height: 260px;
+      margin-top: 16px;
+    }
+
+    /* ─── Grid layouts ─── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ─── Login ─── */
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .login-box h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .login-box p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-input:focus { border-color: var(--orange); }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .login-btn:hover { background: var(--orange-light); }
+
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      z-index: 999;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { color: var(--red); }
+
+    /* ─── Page sections ─── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── Empty state ─── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .emoji { font-size: 36px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 780px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 20px 16px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Loading ─── */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-box">
+      <h1>THEBRICKBOOK</h1>
+      <p>Admin Dashboard</p>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="login-email" class="form-input" placeholder="admin@thebrickbook.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-input" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <button class="login-btn" onclick="login()">Sign In</button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard (hidden until auth) -->
+  <div id="app" style="display:none; width:100%; display:none;">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>THEBRICKBOOK</h1>
+        <span>Admin Panel</span>
+      </div>
+
+      <div class="nav-section">Overview</div>
+      <button class="nav-item active" onclick="showPage('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </button>
+
+      <div class="nav-section">App Data</div>
+      <button class="nav-item" onclick="showPage('users')">
+        <span class="icon">👤</span> Users
+      </button>
+      <button class="nav-item" onclick="showPage('jobs')">
+        <span class="icon">🔨</span> Jobs
+      </button>
+      <button class="nav-item" onclick="showPage('revenue')">
+        <span class="icon">💰</span> Revenue
+      </button>
+
+      <div class="nav-section">Tools</div>
+      <button class="nav-item" onclick="showPage('feedback')">
+        <span class="icon">💬</span> Feedback
+      </button>
+      <button class="nav-item" onclick="showPage('devnotes')">
+        <span class="icon">📝</span> Dev Notes
+      </button>
+      <button class="nav-item" onclick="showPage('settings')">
+        <span class="icon">⚙️</span> Settings
+      </button>
+
+      <div class="sidebar-footer">
+        <div class="user-email" id="user-email"></div>
+        <button class="btn-logout" onclick="logout()">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- ═══ Dashboard ═══ -->
+      <div id="page-dashboard" class="page active">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-subtitle">TheBrickBook overview</div>
+          </div>
+          <button class="btn btn-ghost" onclick="loadDashboard()">Refresh</button>
+        </div>
+
+        <div class="stats-grid" id="dashboard-stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value blue" id="stat-users">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Jobs</div>
+            <div class="stat-value orange" id="stat-jobs">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Invoices Sent</div>
+            <div class="stat-value green" id="stat-invoices">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Jobs Paid</div>
+            <div class="stat-value purple" id="stat-paid">-</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue Tracked</div>
+            <div class="stat-value green" id="stat-revenue">-</div>
+            <div class="stat-sub">Sum of all invoice amounts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Expenses Logged</div>
+            <div class="stat-value" id="stat-expenses">-</div>
+            <div class="stat-sub">Across all users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Jobs Per User</div>
+            <div class="stat-value orange" id="stat-avg-jobs">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">New Users (7 days)</div>
+            <div class="stat-value blue" id="stat-new-users">-</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Job Status Breakdown</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-jobs"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">New Users (Last 30 Days)</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-users"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Users</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Business Name</th>
+                <th>Email</th>
+                <th>GST</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="recent-users-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ Users ═══ -->
+      <div id="page-users" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Users</div>
+            <div class="page-subtitle">All registered users</div>
+          </div>
+          <input type="text" class="search-input" placeholder="Search users..." oninput="filterUsers(this.value)">
+        </div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Business Name</th>
+                <th>ABN</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>GST</th>
+                <th>Jobs</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="users-table"></tbody>
+          </table>
+          <div class="empty-state" id="users-empty" style="display:none;">
+            <div class="emoji">👤</div>
+            <p>No users found</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Jobs ═══ -->
+      <div id="page-jobs" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Jobs</div>
+            <div class="page-subtitle">All jobs across all users</div>
+          </div>
+          <input type="text" class="search-input" placeholder="Search jobs..." oninput="filterJobs(this.value)">
+        </div>
+        <div class="stats-grid" id="jobs-stats"></div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Job Type</th>
+                <th>Status</th>
+                <th>Quote</th>
+                <th>Invoice</th>
+                <th>Hours</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-table"></tbody>
+          </table>
+          <div class="empty-state" id="jobs-empty" style="display:none;">
+            <div class="emoji">🔨</div>
+            <p>No jobs yet</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Revenue ═══ -->
+      <div id="page-revenue" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Revenue Overview</div>
+            <div class="page-subtitle">Platform-wide financial data</div>
+          </div>
+        </div>
+        <div class="stats-grid" id="revenue-stats"></div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Revenue Over Time (Invoiced Jobs)</div>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-revenue"></canvas>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Top Job Types by Revenue</div>
+            </div>
+            <table>
+              <thead><tr><th>Job Type</th><th>Count</th><th>Total Revenue</th></tr></thead>
+              <tbody id="top-jobs-table"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Expense Categories</div>
+            </div>
+            <table>
+              <thead><tr><th>Category</th><th>Count</th><th>Total</th></tr></thead>
+              <tbody id="expense-cats-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Feedback ═══ -->
+      <div id="page-feedback" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Feedback</div>
+            <div class="page-subtitle">User feedback and support messages</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="empty-state" id="feedback-empty">
+            <div class="emoji">💬</div>
+            <p>No feedback table found. Create a <code>feedback</code> table in Supabase to enable this feature.</p>
+          </div>
+          <table style="display:none;" id="feedback-table-wrap">
+            <thead><tr><th>User</th><th>Message</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="feedback-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ Dev Notes ═══ -->
+      <div id="page-devnotes" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Dev Notes</div>
+            <div class="page-subtitle">Internal development notes and todos</div>
+          </div>
+          <button class="btn btn-primary" onclick="showAddNote()">+ Add Note</button>
+        </div>
+
+        <div class="card" id="add-note-card" style="display:none; margin-bottom: 20px;">
+          <div class="form-group">
+            <label class="form-label">Note</label>
+            <textarea id="note-text" class="form-input" rows="3" placeholder="What needs to be done?" style="resize:vertical;min-height:80px;"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="btn btn-primary" onclick="saveNote()">Save</button>
+            <button class="btn btn-ghost" onclick="hideAddNote()">Cancel</button>
+          </div>
+        </div>
+
+        <div id="notes-open"></div>
+        <div id="notes-done" style="margin-top:24px;"></div>
+      </div>
+
+      <!-- ═══ Settings ═══ -->
+      <div id="page-settings" class="page">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Settings</div>
+            <div class="page-subtitle">Database connection and configuration</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Supabase Connection</div></div>
+          <table>
+            <tr><td style="width:140px;font-weight:600;">URL</td><td style="font-family:monospace;font-size:12px;" id="sb-url"></td></tr>
+            <tr><td style="font-weight:600;">Anon Key</td><td style="font-family:monospace;font-size:12px;" id="sb-key"></td></tr>
+            <tr><td style="font-weight:600;">Status</td><td id="sb-status"><span class="spinner"></span></td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Database Tables</div></div>
+          <div id="db-tables"></div>
+        </div>
+
+        <div class="card" style="border-color: rgba(239,68,68,0.3);">
+          <div class="card-header"><div class="card-title" style="color:var(--red);">Danger Zone</div></div>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Create required admin tables if they don't exist yet.</p>
+          <button class="btn btn-ghost" onclick="createAdminTables()" style="border-color:rgba(239,68,68,0.3);color:var(--red);">Create Admin Tables (dev_notes)</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ─── Supabase ───
+    const SUPABASE_URL = 'https://lrqkcgubmmvpxyjuhugc.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzkxNDAsImV4cCI6MjA4OTUxNTE0MH0.yGnd-oQMeXWt3ebtLHHSpYwbsmaMFulW4gs1_XOEeuI';
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ─── State ───
+    let allUsers = [];
+    let allJobs = [];
+    let allExpenses = [];
+    let chartJobs = null;
+    let chartUsers = null;
+    let chartRevenue = null;
+
+    // ─── Auth ───
+    async function checkAuth() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'flex';
+        document.getElementById('user-email').textContent = session.user.email;
+        loadDashboard();
+      }
+    }
+
+    async function login() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        errEl.textContent = error.message;
+        errEl.style.display = 'block';
+      } else {
+        checkAuth();
+      }
+    }
+
+    async function logout() {
+      await sb.auth.signOut();
+      location.reload();
+    }
+
+    // ─── Navigation ───
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      event.target.closest('.nav-item').classList.add('active');
+
+      if (page === 'dashboard') loadDashboard();
+      if (page === 'users') loadUsers();
+      if (page === 'jobs') loadJobs();
+      if (page === 'revenue') loadRevenue();
+      if (page === 'devnotes') loadNotes();
+      if (page === 'settings') loadSettings();
+      if (page === 'feedback') loadFeedback();
+    }
+
+    // ─── Dashboard ───
+    async function loadDashboard() {
+      try {
+        const [profiles, jobs, expenses] = await Promise.all([
+          sb.from('profiles').select('*'),
+          sb.from('jobs').select('*'),
+          sb.from('expenses').select('*')
+        ]);
+
+        allUsers = profiles.data || [];
+        allJobs = jobs.data || [];
+        allExpenses = expenses.data || [];
+
+        // Stats
+        const invoicedJobs = allJobs.filter(j => ['invoiced', 'paid'].includes(j.status));
+        const paidJobs = allJobs.filter(j => j.status === 'paid');
+        const totalRevenue = invoicedJobs.reduce((sum, j) => sum + Number(j.invoice_amount || j.quote_amount || 0), 0);
+        const totalExpenses = allExpenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+        const avgJobs = allUsers.length ? (allJobs.length / allUsers.length).toFixed(1) : '0';
+
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        const newUsers = allUsers.filter(u => new Date(u.created_at) > weekAgo).length;
+
+        document.getElementById('stat-users').textContent = allUsers.length;
+        document.getElementById('stat-jobs').textContent = allJobs.length;
+        document.getElementById('stat-invoices').textContent = invoicedJobs.length;
+        document.getElementById('stat-paid').textContent = paidJobs.length;
+        document.getElementById('stat-revenue').textContent = '$' + totalRevenue.toLocaleString();
+        document.getElementById('stat-expenses').textContent = '$' + totalExpenses.toLocaleString();
+        document.getElementById('stat-avg-jobs').textContent = avgJobs;
+        document.getElementById('stat-new-users').textContent = newUsers;
+
+        // Recent users table
+        const recent = [...allUsers].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8);
+        document.getElementById('recent-users-table').innerHTML = recent.map(u => `
+          <tr>
+            <td style="font-weight:600;color:var(--text)">${u.business_name || 'No name'}</td>
+            <td>${u.email || '-'}</td>
+            <td>${u.gst_registered ? '<span class="badge green">Yes</span>' : '<span class="badge" style="background:var(--bg-input);color:var(--text-muted)">No</span>'}</td>
+            <td>${timeAgo(u.created_at)}</td>
+          </tr>
+        `).join('');
+
+        // Charts
+        renderJobsChart();
+        renderUsersChart();
+      } catch (e) {
+        console.error('Dashboard load error:', e);
+      }
+    }
+
+    function renderJobsChart() {
+      const statuses = ['quoted', 'in_progress', 'completed', 'invoiced', 'paid'];
+      const labels = ['Quoted', 'In Progress', 'Completed', 'Invoiced', 'Paid'];
+      const colors = ['#3B82F6', '#e67e22', '#10B981', '#8B5CF6', '#22C55E'];
+      const data = statuses.map(s => allJobs.filter(j => j.status === s).length);
+
+      const ctx = document.getElementById('chart-jobs');
+      if (chartJobs) chartJobs.destroy();
+      chartJobs = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{ data, backgroundColor: colors, borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function renderUsersChart() {
+      const days = 30;
+      const labels = [];
+      const data = [];
+
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().split('T')[0];
+        labels.push(d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }));
+        data.push(allUsers.filter(u => u.created_at && u.created_at.startsWith(key)).length);
+      }
+
+      const ctx = document.getElementById('chart-users');
+      if (chartUsers) chartUsers.destroy();
+      chartUsers = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'New Users',
+            data,
+            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { color: '#64748B', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#64748B', stepSize: 1 }, grid: { color: '#1E293B' }, beginAtZero: true }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    // ─── Users ───
+    async function loadUsers() {
+      const { data } = await sb.from('profiles').select('*');
+      allUsers = data || [];
+
+      // Get job counts per user
+      const { data: jobs } = await sb.from('jobs').select('user_id');
+      const jobCounts = {};
+      (jobs || []).forEach(j => { jobCounts[j.user_id] = (jobCounts[j.user_id] || 0) + 1; });
+
+      renderUsers(allUsers, jobCounts);
+    }
+
+    function renderUsers(users, jobCounts = {}) {
+      const el = document.getElementById('users-table');
+      const empty = document.getElementById('users-empty');
+
+      if (!users.length) {
+        el.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      el.innerHTML = users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(u => `
+        <tr>
+          <td style="font-weight:600;color:var(--text)">${u.business_name || 'No name'}</td>
+          <td style="font-family:monospace;font-size:12px;">${u.abn || '-'}</td>
+          <td>${u.phone || '-'}</td>
+          <td>${u.email || '-'}</td>
+          <td>${u.gst_registered ? '<span class="badge green">GST</span>' : '-'}</td>
+          <td>${jobCounts[u.id] || 0}</td>
+          <td>${timeAgo(u.created_at)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterUsers(query) {
+      const q = query.toLowerCase();
+      const filtered = allUsers.filter(u =>
+        (u.business_name || '').toLowerCase().includes(q) ||
+        (u.email || '').toLowerCase().includes(q) ||
+        (u.abn || '').includes(q)
+      );
+      renderUsers(filtered);
+    }
+
+    // ─── Jobs ───
+    async function loadJobs() {
+      const { data } = await sb.from('jobs').select('*').order('created_at', { ascending: false }).limit(200);
+      allJobs = data || [];
+
+      // Stats
+      const statuses = { quoted: 0, in_progress: 0, completed: 0, invoiced: 0, paid: 0 };
+      allJobs.forEach(j => { if (statuses[j.status] !== undefined) statuses[j.status]++; });
+
+      document.getElementById('jobs-stats').innerHTML = Object.entries(statuses).map(([s, c]) => {
+        const colors = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
+        const labels = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
+        return `<div class="stat-card"><div class="stat-label">${labels[s]}</div><div class="stat-value ${colors[s]}">${c}</div></div>`;
+      }).join('');
+
+      renderJobs(allJobs);
+    }
+
+    function renderJobs(jobs) {
+      const el = document.getElementById('jobs-table');
+      const empty = document.getElementById('jobs-empty');
+
+      if (!jobs.length) { el.innerHTML = ''; empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+
+      const statusBadge = (s) => {
+        const map = { quoted: 'blue', in_progress: 'orange', completed: 'green', invoiced: 'purple', paid: 'green' };
+        const labels = { quoted: 'Quoted', in_progress: 'In Progress', completed: 'Completed', invoiced: 'Invoiced', paid: 'Paid' };
+        return `<span class="badge ${map[s] || ''}">${labels[s] || s}</span>`;
+      };
+
+      el.innerHTML = jobs.map(j => `
+        <tr>
+          <td style="font-weight:600;color:var(--text)">${j.client_name}</td>
+          <td>${j.job_type}</td>
+          <td>${statusBadge(j.status)}</td>
+          <td>$${Number(j.quote_amount || 0).toLocaleString()}</td>
+          <td>${j.invoice_amount ? '$' + Number(j.invoice_amount).toLocaleString() : '-'}</td>
+          <td>${j.timer_seconds ? (j.timer_seconds / 3600).toFixed(1) + 'h' : '-'}</td>
+          <td>${timeAgo(j.created_at)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterJobs(query) {
+      const q = query.toLowerCase();
+      const filtered = allJobs.filter(j =>
+        j.client_name.toLowerCase().includes(q) ||
+        j.job_type.toLowerCase().includes(q) ||
+        j.status.includes(q)
+      );
+      renderJobs(filtered);
+    }
+
+    // ─── Revenue ───
+    async function loadRevenue() {
+      const [jobsRes, expensesRes] = await Promise.all([
+        sb.from('jobs').select('*').in('status', ['invoiced', 'paid']).order('invoiced_at', { ascending: true }),
+        sb.from('expenses').select('*')
+      ]);
+
+      const jobs = jobsRes.data || [];
+      const expenses = expensesRes.data || [];
+      const totalRev = jobs.reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
+      const totalExp = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+      const totalProfit = totalRev - totalExp;
+      const paidJobs = jobs.filter(j => j.status === 'paid');
+      const paidRev = paidJobs.reduce((s, j) => s + Number(j.invoice_amount || j.quote_amount || 0), 0);
+
+      document.getElementById('revenue-stats').innerHTML = `
+        <div class="stat-card"><div class="stat-label">Total Invoiced</div><div class="stat-value green">$${totalRev.toLocaleString()}</div></div>
+        <div class="stat-card"><div class="stat-label">Total Expenses</div><div class="stat-value">$${totalExp.toLocaleString()}</div></div>
+        <div class="stat-card"><div class="stat-label">Est. Profit</div><div class="stat-value ${totalProfit >= 0 ? 'green' : ''}" style="${totalProfit < 0 ? 'color:var(--red)' : ''}">$${totalProfit.toLocaleString()}</div></div>
+        <div class="stat-card"><div class="stat-label">Paid Revenue</div><div class="stat-value purple">$${paidRev.toLocaleString()}</div></div>
+      `;
+
+      // Revenue chart
+      const monthly = {};
+      jobs.forEach(j => {
+        const d = new Date(j.invoiced_at || j.created_at);
+        const key = d.toLocaleDateString('en-AU', { month: 'short', year: '2-digit' });
+        monthly[key] = (monthly[key] || 0) + Number(j.invoice_amount || j.quote_amount || 0);
+      });
+
+      const ctx = document.getElementById('chart-revenue');
+      if (chartRevenue) chartRevenue.destroy();
+      if (Object.keys(monthly).length) {
+        chartRevenue = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: Object.keys(monthly),
+            datasets: [{
+              label: 'Revenue',
+              data: Object.values(monthly),
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              fill: true,
+              tension: 0.3,
+              borderWidth: 2,
+              pointRadius: 4,
+              pointBackgroundColor: '#10B981'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { ticks: { color: '#64748B' }, grid: { display: false } },
+              y: { ticks: { color: '#64748B', callback: v => '$' + v.toLocaleString() }, grid: { color: '#1E293B' }, beginAtZero: true }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      // Top job types
+      const jobTypes = {};
+      (allJobs.length ? allJobs : jobs).forEach(j => {
+        if (!jobTypes[j.job_type]) jobTypes[j.job_type] = { count: 0, revenue: 0 };
+        jobTypes[j.job_type].count++;
+        jobTypes[j.job_type].revenue += Number(j.invoice_amount || j.quote_amount || 0);
+      });
+      const sorted = Object.entries(jobTypes).sort((a, b) => b[1].revenue - a[1].revenue).slice(0, 10);
+      document.getElementById('top-jobs-table').innerHTML = sorted.map(([type, d]) => `
+        <tr><td style="font-weight:600;color:var(--text)">${type}</td><td>${d.count}</td><td>$${d.revenue.toLocaleString()}</td></tr>
+      `).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
+
+      // Expense categories
+      const cats = {};
+      expenses.forEach(e => {
+        if (!cats[e.category]) cats[e.category] = { count: 0, total: 0 };
+        cats[e.category].count++;
+        cats[e.category].total += Number(e.amount || 0);
+      });
+      const sortedCats = Object.entries(cats).sort((a, b) => b[1].total - a[1].total);
+      document.getElementById('expense-cats-table').innerHTML = sortedCats.map(([cat, d]) => `
+        <tr><td style="font-weight:600;color:var(--text);text-transform:capitalize">${cat}</td><td>${d.count}</td><td>$${d.total.toLocaleString()}</td></tr>
+      `).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">No data</td></tr>';
+    }
+
+    // ─── Feedback ───
+    async function loadFeedback() {
+      try {
+        const { data, error } = await sb.from('feedback').select('*').order('created_at', { ascending: false });
+        if (error) {
+          document.getElementById('feedback-empty').style.display = 'block';
+          document.getElementById('feedback-table-wrap').style.display = 'none';
+          return;
+        }
+        if (!data || !data.length) {
+          document.getElementById('feedback-empty').innerHTML = '<div class="emoji">💬</div><p>No feedback yet</p>';
+          document.getElementById('feedback-empty').style.display = 'block';
+          return;
+        }
+        document.getElementById('feedback-empty').style.display = 'none';
+        document.getElementById('feedback-table-wrap').style.display = 'table';
+        document.getElementById('feedback-table').innerHTML = data.map(f => `
+          <tr>
+            <td>${f.user_email || f.user_id || '-'}</td>
+            <td>${f.message || f.text || '-'}</td>
+            <td>${timeAgo(f.created_at)}</td>
+            <td><span class="badge ${f.status === 'reviewed' ? 'green' : 'amber'}">${f.status || 'new'}</span></td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        document.getElementById('feedback-empty').style.display = 'block';
+      }
+    }
+
+    // ─── Dev Notes ───
+    async function loadNotes() {
+      try {
+        const { data, error } = await sb.from('dev_notes').select('*').order('created_at', { ascending: false });
+        if (error) {
+          document.getElementById('notes-open').innerHTML = '<div class="card"><div class="empty-state"><div class="emoji">📝</div><p>Run "Create Admin Tables" in Settings first</p></div></div>';
+          document.getElementById('notes-done').innerHTML = '';
+          return;
+        }
+
+        const notes = data || [];
+        const open = notes.filter(n => n.status !== 'done');
+        const done = notes.filter(n => n.status === 'done');
+
+        document.getElementById('notes-open').innerHTML = open.length ? open.map(noteCard).join('') :
+          '<div class="card"><div class="empty-state"><div class="emoji">✅</div><p>All caught up!</p></div></div>';
+
+        document.getElementById('notes-done').innerHTML = done.length ?
+          `<div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Done</div>` +
+          done.map(n => noteCard(n, true)).join('') : '';
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function noteCard(n, isDone = false) {
+      return `<div class="card" style="${isDone ? 'opacity:0.5;' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <p style="font-size:14px;line-height:1.6;${isDone ? 'text-decoration:line-through;' : ''}">${n.text || n.note}</p>
+          <div style="display:flex;gap:6px;flex-shrink:0;margin-left:16px;">
+            ${!isDone ? `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','done')">Done</button>` :
+              `<button class="btn btn-sm btn-ghost" onclick="markNote('${n.id}','open')">Reopen</button>`}
+            <button class="btn btn-sm btn-ghost" style="color:var(--red)" onclick="deleteNote('${n.id}')">Delete</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">${timeAgo(n.created_at)}</div>
+      </div>`;
+    }
+
+    function showAddNote() { document.getElementById('add-note-card').style.display = 'block'; document.getElementById('note-text').focus(); }
+    function hideAddNote() { document.getElementById('add-note-card').style.display = 'none'; document.getElementById('note-text').value = ''; }
+
+    async function saveNote() {
+      const text = document.getElementById('note-text').value.trim();
+      if (!text) return;
+      await sb.from('dev_notes').insert({ text, status: 'open' });
+      hideAddNote();
+      toast('Note saved');
+      loadNotes();
+    }
+
+    async function markNote(id, status) {
+      await sb.from('dev_notes').update({ status }).eq('id', id);
+      loadNotes();
+    }
+
+    async function deleteNote(id) {
+      if (!confirm('Delete this note?')) return;
+      await sb.from('dev_notes').delete().eq('id', id);
+      toast('Note deleted');
+      loadNotes();
+    }
+
+    // ─── Settings ───
+    async function loadSettings() {
+      document.getElementById('sb-url').textContent = SUPABASE_URL;
+      document.getElementById('sb-key').textContent = SUPABASE_ANON_KEY.slice(0, 20) + '...' + SUPABASE_ANON_KEY.slice(-10);
+
+      try {
+        const { count: profileCount } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+        document.getElementById('sb-status').innerHTML = '<span class="badge green">Connected</span>';
+
+        const tables = ['profiles', 'jobs', 'expenses', 'wages', 'clients'];
+        let html = '<table>';
+        for (const t of tables) {
+          try {
+            const { count } = await sb.from(t).select('*', { count: 'exact', head: true });
+            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>${count} rows</td><td><span class="badge green">OK</span></td></tr>`;
+          } catch {
+            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>-</td><td><span class="badge red">Error</span></td></tr>`;
+          }
+        }
+
+        // Check admin tables
+        for (const t of ['dev_notes']) {
+          try {
+            const { count, error } = await sb.from(t).select('*', { count: 'exact', head: true });
+            if (error) throw error;
+            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>${count} rows</td><td><span class="badge green">OK</span></td></tr>`;
+          } catch {
+            html += `<tr><td style="font-weight:600;width:140px;">${t}</td><td>-</td><td><span class="badge amber">Not created</span></td></tr>`;
+          }
+        }
+        html += '</table>';
+        document.getElementById('db-tables').innerHTML = html;
+      } catch (e) {
+        document.getElementById('sb-status').innerHTML = '<span class="badge red">Error</span>';
+      }
+    }
+
+    async function createAdminTables() {
+      if (!confirm('Create dev_notes table?')) return;
+      try {
+        const { error } = await sb.rpc('exec_sql', {
+          query: `
+            CREATE TABLE IF NOT EXISTS public.dev_notes (
+              id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+              text text NOT NULL,
+              status text DEFAULT 'open',
+              created_at timestamptz DEFAULT now()
+            );
+            ALTER TABLE public.dev_notes ENABLE ROW LEVEL SECURITY;
+            CREATE POLICY "Allow all for authenticated" ON public.dev_notes FOR ALL USING (auth.role() = 'authenticated');
+          `
+        });
+        if (error) {
+          toast('You may need to create this table manually in Supabase SQL Editor', true);
+        } else {
+          toast('Table created');
+        }
+        loadSettings();
+      } catch (e) {
+        toast('Create table manually in Supabase SQL Editor', true);
+      }
+    }
+
+    // ─── Utils ───
+    function timeAgo(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr);
+      const now = new Date();
+      const diff = Math.floor((now - d) / 1000);
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+      return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    }
+
+    function toast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show' + (isError ? ' error' : '');
+      setTimeout(() => t.className = 'toast', 2500);
+    }
+
+    // ─── Init ───
+    checkAuth();
+  </script>
+</body>
+</html>
