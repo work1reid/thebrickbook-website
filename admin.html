@@ -344,7 +344,9 @@
   <script>
     const SUPABASE_URL='https://lrqkcgubmmvpxyjuhugc.supabase.co';
     const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzkxNDAsImV4cCI6MjA4OTUxNTE0MH0.yGnd-oQMeXWt3ebtLHHSpYwbsmaMFulW4gs1_XOEeuI';
+    const SERVICE_ROLE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzkzOTE0MCwiZXhwIjoyMDg5NTE1MTQwfQ.R0BgwNyrpJah992y20nREKmEPWcZ5-awvXXdC8y-8RM';
     const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    const sbAdmin=supabase.createClient(SUPABASE_URL,SERVICE_ROLE_KEY);
     const ADMIN_SALT='tbb_admin_2026_salt';
     const ADMIN_KEY='a9e77e5f898583a1ac531c369f3789fde72496e3ed378c077222e8690555771a';
     let allUsers=[],allJobs=[],allExpenses=[],allWages=[],allClients=[];
@@ -486,7 +488,7 @@
     }
 
     // ─── USER MODAL ───
-    function openUserModal(uid){
+    async function openUserModal(uid){
       const u=allUsers.find(u=>u.id===uid);if(!u)return;
       const jobs=allJobs.filter(j=>j.user_id===uid);
       const exp=allExpenses.filter(e=>e.user_id===uid);
@@ -496,6 +498,15 @@
       const wgT=wg.reduce((s,w)=>s+Number(w.amount||0),0);
       const hrs=jobs.reduce((s,j)=>s+(j.timer_seconds||0),0)/3600;
       const lastJob=jobs.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
+
+      // Fetch auth user to check email confirmation
+      let authUser = null;
+      let emailConfirmed = false;
+      try {
+        const { data } = await sbAdmin.auth.admin.getUserById(uid);
+        authUser = data?.user;
+        emailConfirmed = authUser?.email_confirmed_at ? true : false;
+      } catch(e) { console.error('Could not fetch auth user', e); }
 
       document.getElementById('modal-user-name').textContent=u.business_name||'No name';
       const bm={quoted:'blue',in_progress:'orange',completed:'green',invoiced:'purple',paid:'green'};
@@ -519,6 +530,7 @@
           <tr><td style="font-weight:600">Phone</td><td>${esc(u.phone)||'-'}</td></tr>
           <tr><td style="font-weight:600">GST</td><td>${u.gst_registered?'<span class="badge green">Registered</span>':'No'}</td></tr>
           <tr><td style="font-weight:600">Status</td><td>${isBanned?'<span class="badge red">Banned</span>':'<span class="badge green">Active</span>'}</td></tr>
+          <tr><td style="font-weight:600">Email</td><td>${emailConfirmed?'<span class="badge green">Confirmed</span>':'<span class="badge amber">Unconfirmed</span> <button class="btn btn-sm btn-primary" style="margin-left:8px" onclick="confirmEmail(\''+uid+'\')">Confirm Now</button>'}</td></tr>
           <tr><td style="font-weight:600">Joined</td><td>${new Date(u.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</td></tr>
           <tr><td style="font-weight:600">Last Active</td><td>${lastJob?timeAgo(lastJob.created_at):'Never'}</td></tr>
         </table>
@@ -530,6 +542,7 @@
         <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
           <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Actions</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${!emailConfirmed ? `<button class="btn btn-ghost" style="border-color:rgba(6,182,212,.3);color:var(--cyan)" onclick="resendConfirmation('${uid}')">Resend Confirmation</button>` : ''}
             ${!isBanned ?
               `<button class="btn btn-ghost" style="border-color:rgba(245,158,11,.3);color:var(--amber)" onclick="banUser('${uid}')">Ban User</button>` :
               `<button class="btn btn-ghost" style="border-color:rgba(16,185,129,.3);color:var(--green)" onclick="unbanUser('${uid}')">Unban User</button>`
@@ -537,13 +550,29 @@
             <button class="btn btn-ghost" style="border-color:rgba(239,68,68,.3);color:var(--red)" onclick="deleteUserData('${uid}')">Delete All Data</button>
             <button class="btn btn-ghost" style="border-color:rgba(239,68,68,.3);color:var(--red)" onclick="deleteUser('${uid}')">Delete Account</button>
           </div>
-          <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Ban prevents login. Delete All Data removes jobs, expenses, wages, clients but keeps account. Delete Account removes everything permanently.</p>
+          <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Confirm = verify email instantly. Ban = block login. Delete Data = remove jobs/expenses but keep account. Delete Account = permanent removal.</p>
         </div>`;
 
       document.getElementById('user-modal').classList.add('open');
     }
     function closeModal(){document.getElementById('user-modal').classList.remove('open')}
     document.getElementById('user-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+    async function confirmEmail(uid) {
+      if (!confirm('Confirm this user\'s email? They will be able to sign in immediately.')) return;
+      const { error } = await sbAdmin.auth.admin.updateUserById(uid, { email_confirm: true });
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      toast('Email confirmed');
+      openUserModal(uid);
+    }
+
+    async function resendConfirmation(uid) {
+      const u = allUsers.find(u => u.id === uid);
+      if (!u?.email) { toast('No email on file', true); return; }
+      const { error } = await sbAdmin.auth.admin.generateLink({ type: 'signup', email: u.email });
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      toast('Confirmation email resent to ' + u.email);
+    }
 
     async function banUser(uid) {
       if (!confirm('Ban this user? They will not be able to use the app.')) return;
@@ -604,9 +633,9 @@
         sb.from('clients').delete().eq('user_id', uid)
       ]);
 
-      // Delete profile (cascades from auth.users via FK)
-      const { error } = await sb.from('profiles').delete().eq('id', uid);
-      if (error) { toast('Profile deleted but auth user may remain — remove manually in Supabase Auth dashboard', true); }
+      // Delete auth user (cascades to profile via FK)
+      const { error } = await sbAdmin.auth.admin.deleteUser(uid);
+      if (error) { toast('Data deleted but auth removal failed: ' + error.message, true); }
 
       allUsers = allUsers.filter(u => u.id !== uid);
       allJobs = allJobs.filter(j => j.user_id !== uid);
