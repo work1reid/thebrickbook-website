@@ -272,7 +272,7 @@
             <input type="text" class="search-input" placeholder="Search users..." oninput="filterUsers(this.value)">
           </div>
         </div>
-        <div class="card"><table><thead><tr><th>Business</th><th>ABN</th><th>Email</th><th>GST</th><th>Jobs</th><th>Last Active</th><th>Joined</th></tr></thead><tbody id="users-table"></tbody></table><div class="empty-state" id="users-empty" style="display:none"><p>No users found</p></div></div>
+        <div class="card"><table><thead><tr><th>Business</th><th>ABN</th><th>Email</th><th>Status</th><th>Jobs</th><th>Last Active</th><th>Joined</th></tr></thead><tbody id="users-table"></tbody></table><div class="empty-state" id="users-empty" style="display:none"><p>No users found</p></div></div>
       </div>
 
       <!-- ═══ FEEDBACK ═══ -->
@@ -501,28 +501,123 @@
       const bm={quoted:'blue',in_progress:'orange',completed:'green',invoiced:'purple',paid:'green'};
       const lm={quoted:'Quoted',in_progress:'In Progress',completed:'Completed',invoiced:'Invoiced',paid:'Paid'};
 
+      const isBanned = u.banned || false;
+
       document.getElementById('modal-user-content').innerHTML=`
         <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
           <div class="stat-card"><div><div class="stat-label">Jobs</div><div class="stat-value">${jobs.length}</div></div></div>
           <div class="stat-card"><div><div class="stat-label">Paid Revenue</div><div class="stat-value green">$${rev.toLocaleString()}</div></div></div>
           <div class="stat-card"><div><div class="stat-label">Hours</div><div class="stat-value cyan">${hrs.toFixed(1)}h</div></div></div>
         </div>
+
+        ${isBanned ? '<div style="background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:600;color:var(--red)">This user is banned</span><button class="btn btn-sm btn-ghost" onclick="unbanUser(\''+uid+'\')">Unban</button></div>' : ''}
+
         <table style="margin-bottom:16px">
-          <tr><td style="font-weight:600;width:100px">ABN</td><td>${esc(u.abn)||'-'}</td></tr>
+          <tr><td style="font-weight:600;width:100px">User ID</td><td style="font-family:monospace;font-size:11px;color:var(--text-muted)">${uid}</td></tr>
+          <tr><td style="font-weight:600">ABN</td><td>${esc(u.abn)||'-'}</td></tr>
           <tr><td style="font-weight:600">Email</td><td>${esc(u.email)||'-'}</td></tr>
           <tr><td style="font-weight:600">Phone</td><td>${esc(u.phone)||'-'}</td></tr>
           <tr><td style="font-weight:600">GST</td><td>${u.gst_registered?'<span class="badge green">Registered</span>':'No'}</td></tr>
+          <tr><td style="font-weight:600">Status</td><td>${isBanned?'<span class="badge red">Banned</span>':'<span class="badge green">Active</span>'}</td></tr>
           <tr><td style="font-weight:600">Joined</td><td>${new Date(u.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</td></tr>
           <tr><td style="font-weight:600">Last Active</td><td>${lastJob?timeAgo(lastJob.created_at):'Never'}</td></tr>
         </table>
+
         <div class="card-title" style="margin-bottom:12px">Recent Jobs</div>
         <table><thead><tr><th>Client</th><th>Type</th><th>Status</th><th>Amount</th></tr></thead>
-        <tbody>${jobs.slice(0,10).map(j=>`<tr><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.invoice_amount||j.quote_amount||0).toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">No jobs</td></tr>'}</tbody></table>`;
+        <tbody>${jobs.slice(0,10).map(j=>`<tr><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.invoice_amount||j.quote_amount||0).toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">No jobs</td></tr>'}</tbody></table>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Actions</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${!isBanned ?
+              `<button class="btn btn-ghost" style="border-color:rgba(245,158,11,.3);color:var(--amber)" onclick="banUser('${uid}')">Ban User</button>` :
+              `<button class="btn btn-ghost" style="border-color:rgba(16,185,129,.3);color:var(--green)" onclick="unbanUser('${uid}')">Unban User</button>`
+            }
+            <button class="btn btn-ghost" style="border-color:rgba(239,68,68,.3);color:var(--red)" onclick="deleteUserData('${uid}')">Delete All Data</button>
+            <button class="btn btn-ghost" style="border-color:rgba(239,68,68,.3);color:var(--red)" onclick="deleteUser('${uid}')">Delete Account</button>
+          </div>
+          <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Ban prevents login. Delete All Data removes jobs, expenses, wages, clients but keeps account. Delete Account removes everything permanently.</p>
+        </div>`;
 
       document.getElementById('user-modal').classList.add('open');
     }
     function closeModal(){document.getElementById('user-modal').classList.remove('open')}
     document.getElementById('user-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+    async function banUser(uid) {
+      if (!confirm('Ban this user? They will not be able to use the app.')) return;
+      const { error } = await sb.from('profiles').update({ banned: true }).eq('id', uid);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      const u = allUsers.find(u => u.id === uid);
+      if (u) u.banned = true;
+      toast('User banned');
+      openUserModal(uid);
+    }
+
+    async function unbanUser(uid) {
+      if (!confirm('Unban this user?')) return;
+      const { error } = await sb.from('profiles').update({ banned: false }).eq('id', uid);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      const u = allUsers.find(u => u.id === uid);
+      if (u) u.banned = false;
+      toast('User unbanned');
+      openUserModal(uid);
+    }
+
+    async function deleteUserData(uid) {
+      const u = allUsers.find(u => u.id === uid);
+      const name = u?.business_name || 'this user';
+      if (!confirm(`Delete ALL data for ${name}? This removes their jobs, expenses, wages, and clients. The account stays.`)) return;
+      if (!confirm('Are you sure? This cannot be undone.')) return;
+
+      const results = await Promise.all([
+        sb.from('jobs').delete().eq('user_id', uid),
+        sb.from('expenses').delete().eq('user_id', uid),
+        sb.from('wages').delete().eq('user_id', uid),
+        sb.from('clients').delete().eq('user_id', uid)
+      ]);
+
+      const errors = results.filter(r => r.error);
+      if (errors.length) { toast('Some deletions failed — check RLS policies', true); return; }
+
+      allJobs = allJobs.filter(j => j.user_id !== uid);
+      allExpenses = allExpenses.filter(e => e.user_id !== uid);
+      allWages = allWages.filter(w => w.user_id !== uid);
+      allClients = allClients.filter(c => c.user_id !== uid);
+
+      toast('All data deleted for ' + name);
+      openUserModal(uid);
+    }
+
+    async function deleteUser(uid) {
+      const u = allUsers.find(u => u.id === uid);
+      const name = u?.business_name || 'this user';
+      if (!confirm(`PERMANENTLY DELETE ${name}'s account and ALL their data? This cannot be undone.`)) return;
+      if (!confirm('Final confirmation — delete everything?')) return;
+
+      // Delete all user data first
+      await Promise.all([
+        sb.from('jobs').delete().eq('user_id', uid),
+        sb.from('expenses').delete().eq('user_id', uid),
+        sb.from('wages').delete().eq('user_id', uid),
+        sb.from('clients').delete().eq('user_id', uid)
+      ]);
+
+      // Delete profile (cascades from auth.users via FK)
+      const { error } = await sb.from('profiles').delete().eq('id', uid);
+      if (error) { toast('Profile deleted but auth user may remain — remove manually in Supabase Auth dashboard', true); }
+
+      allUsers = allUsers.filter(u => u.id !== uid);
+      allJobs = allJobs.filter(j => j.user_id !== uid);
+      allExpenses = allExpenses.filter(e => e.user_id !== uid);
+      allWages = allWages.filter(w => w.user_id !== uid);
+      allClients = allClients.filter(c => c.user_id !== uid);
+
+      toast('Account deleted');
+      closeModal();
+      loadUsers();
+    }
 
     // ─── USERS ───
     async function loadUsers(){
@@ -536,9 +631,10 @@
     function renderUsers(users,jc={},la={}){
       const el=document.getElementById('users-table');const em=document.getElementById('users-empty');
       if(!users.length){el.innerHTML='';em.style.display='block';return}em.style.display='none';
-      el.innerHTML=users.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(u=>
-        `<tr class="clickable" onclick="openUserModal('${u.id}')"><td style="font-weight:600;color:var(--text)">${esc(u.business_name)||'No name'}</td><td style="font-family:monospace;font-size:11px">${esc(u.abn)||'-'}</td><td>${esc(u.email)||'-'}</td><td>${u.gst_registered?'<span class="badge green">GST</span>':'-'}</td><td>${jc[u.id]||'<span style="color:var(--red)">0</span>'}</td><td>${la[u.id]?timeAgo(la[u.id]):'<span style="color:var(--amber)">Never</span>'}</td><td>${timeAgo(u.created_at)}</td></tr>`
-      ).join('')}
+      el.innerHTML=users.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(u=>{
+        const statusBadge = u.banned ? '<span class="badge red">Banned</span>' : (u.gst_registered ? '<span class="badge green">Active &middot; GST</span>' : '<span class="badge green">Active</span>');
+        return `<tr class="clickable" onclick="openUserModal('${u.id}')"><td style="font-weight:600;color:var(--text)">${esc(u.business_name)||'No name'}</td><td style="font-family:monospace;font-size:11px">${esc(u.abn)||'-'}</td><td>${esc(u.email)||'-'}</td><td>${statusBadge}</td><td>${jc[u.id]||'<span style="color:var(--red)">0</span>'}</td><td>${la[u.id]?timeAgo(la[u.id]):'<span style="color:var(--amber)">Never</span>'}</td><td>${timeAgo(u.created_at)}</td></tr>`;
+      }).join('')}
     function filterUsers(q){q=q.toLowerCase();const jc={};const la={};allJobs.forEach(j=>{jc[j.user_id]=(jc[j.user_id]||0)+1;if(!la[j.user_id]||new Date(j.created_at)>new Date(la[j.user_id]))la[j.user_id]=j.created_at});renderUsers(allUsers.filter(u=>(u.business_name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)),jc,la)}
 
     // ─── FEEDBACK ───
