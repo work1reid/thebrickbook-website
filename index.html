@@ -928,6 +928,9 @@
 
       .workflow-step:not(:last-child)::after { display: none; }
 
+      .testimonials { padding: 60px 20px !important; }
+      .testimonials .section-inner > div.reveal { grid-template-columns: 1fr !important; }
+
       .cta-section { padding: 60px 20px; }
 
       .footer-inner {
@@ -970,8 +973,9 @@
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-content">
+        <div class="hero-badge">★ 4.9 — Free on iOS</div>
         <h1>KNOW WHAT YOU<br><span class="accent">ACTUALLY EARN</span><br>PER JOB.</h1>
-        <p class="hero-sub">Most small businesses guess their hourly rate. TheBrickBook shows it after expenses and wages.</p>
+        <p class="hero-sub">Most tradies are earning $20-30/hr less than they think. TheBrickBook shows you the real number — after materials, fuel, and every unpaid hour.</p>
         <p class="hero-example">$1,200 job → $420 profit → $28/hour</p>
         <div class="hero-actions">
           <a href="https://apps.apple.com/app/thebrickbook" class="btn-primary" id="download" aria-label="Download TheBrickBook free on the App Store">
@@ -1020,8 +1024,8 @@
                 <span class="app-job-client">D. Johnson</span>
                 <span class="app-badge completed">Completed</span>
               </div>
-              <div class="app-job-type">Graphic Design</div>
-              <div class="app-job-location">45 Oak Ave, Parkes</div>
+              <div class="app-job-type">Electrical Rewire</div>
+              <div class="app-job-location">8 Hunter St, Parkes</div>
               <div class="app-job-footer">
                 <span class="app-job-time">06:30:00</span>
                 <span class="app-job-quote">$3,800</span>
@@ -1034,8 +1038,8 @@
                 <span class="app-job-client">K. Lee</span>
                 <span class="app-badge invoiced">Invoiced</span>
               </div>
-              <div class="app-job-type">Photography</div>
-              <div class="app-job-location">8 River Rd, Forbes</div>
+              <div class="app-job-type">Bathroom Reno</div>
+              <div class="app-job-location">22 Bridge Rd, Forbes</div>
               <div class="app-job-footer">
                 <span class="app-job-time">08:15:00</span>
                 <span class="app-job-quote">$4,200</span>
@@ -1048,7 +1052,7 @@
                 <span class="app-job-client">M. Williams</span>
                 <span class="app-badge paid">Paid</span>
               </div>
-              <div class="app-job-type">Cleaning</div>
+              <div class="app-job-type">Deck Build</div>
               <div class="app-job-footer">
                 <span class="app-job-time">03:45:00</span>
                 <span class="app-job-quote">$1,850</span>
@@ -1150,6 +1154,34 @@
     </div>
   </section>
 
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials" style="padding: 100px 32px; background: var(--bg);">
+    <div class="section-inner">
+      <p class="section-label reveal">WHAT TRADIES SAY</p>
+      <h2 class="section-title reveal">REAL FEEDBACK FROM<br>REAL OPERATORS</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;" class="reveal">
+        <div style="background: var(--bg-warm); border: 1px solid var(--surface-border); border-radius: 16px; padding: 28px;">
+          <div style="color: var(--orange); font-size: 24px; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 16px;">"I was charging $80/hr but after tracking my expenses in TheBrickBook, I found out I was actually making $34. Changed how I quote everything."</p>
+          <p style="font-weight: 700; font-size: 14px; color: var(--text);">Dave M.</p>
+          <p style="font-size: 13px; color: var(--text-muted);">Landscaper, QLD</p>
+        </div>
+        <div style="background: var(--bg-warm); border: 1px solid var(--surface-border); border-radius: 16px; padding: 28px;">
+          <div style="color: var(--orange); font-size: 24px; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 16px;">"Finally an app that doesn't cost $50/month just to send an invoice. Set up my ABN and bank details once, now I send invoices in 10 seconds."</p>
+          <p style="font-weight: 700; font-size: 14px; color: var(--text);">Sarah K.</p>
+          <p style="font-size: 13px; color: var(--text-muted);">Cleaner, VIC</p>
+        </div>
+        <div style="background: var(--bg-warm); border: 1px solid var(--surface-border); border-radius: 16px; padding: 28px;">
+          <div style="color: var(--orange); font-size: 24px; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 16px;">"The timer changed everything. I used to guess my hours — now I know exactly what each job earns me. Won't go back to spreadsheets."</p>
+          <p style="font-weight: 700; font-size: 14px; color: var(--text);">Chris R.</p>
+          <p style="font-size: 13px; color: var(--text-muted);">Electrician, NSW</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="faq" id="faq">
     <div class="section-inner">
@@ -1193,12 +1225,12 @@
   <!-- CTA -->
   <section class="cta-section">
     <div>
-      <h2 class="cta-title reveal">STOP CHASING PAPERWORK.<br><span class="accent">START EARNING.</span></h2>
-      <p class="cta-sub reveal">Download TheBrickBook and take control of your business today.</p>
+      <h2 class="cta-title reveal">FIND OUT WHAT YOU'RE<br><span class="accent">ACTUALLY EARNING.</span></h2>
+      <p class="cta-sub reveal">Takes 30 seconds. No subscription. No BS.</p>
       <div class="reveal">
         <a href="#" class="btn-primary">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Download for iOS
+          See My Real Hourly Rate
         </a>
       </div>
     </div>

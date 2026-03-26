@@ -346,7 +346,7 @@
     const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzkxNDAsImV4cCI6MjA4OTUxNTE0MH0.yGnd-oQMeXWt3ebtLHHSpYwbsmaMFulW4gs1_XOEeuI';
     const SERVICE_ROLE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzkzOTE0MCwiZXhwIjoyMDg5NTE1MTQwfQ.R0BgwNyrpJah992y20nREKmEPWcZ5-awvXXdC8y-8RM';
     const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-    const sbAdmin=supabase.createClient(SUPABASE_URL,SERVICE_ROLE_KEY);
+    let sbAdmin=null;
     const ADMIN_SALT='tbb_admin_2026_salt';
     const ADMIN_KEY='a9e77e5f898583a1ac531c369f3789fde72496e3ed378c077222e8690555771a';
     let allUsers=[],allJobs=[],allExpenses=[],allWages=[],allClients=[];
@@ -358,7 +358,7 @@
 
     // Auth
     async function deriveKey(pw){const enc=new TextEncoder();const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(ADMIN_SALT),iterations:100000,hash:'SHA-256'},km,256);return Array.from(new Uint8Array(bits)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-    function checkAuth(){if(sessionStorage.getItem('tbb_admin')==='true'){document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='flex';loadDashboard()}}
+    function checkAuth(){if(sessionStorage.getItem('tbb_admin')==='true'){sbAdmin=supabase.createClient(SUPABASE_URL,SERVICE_ROLE_KEY);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='flex';loadDashboard()}}
     async function login(){const pw=document.getElementById('login-password').value;const err=document.getElementById('login-error');err.style.display='none';if(await deriveKey(pw)===ADMIN_KEY){sessionStorage.setItem('tbb_admin','true');checkAuth()}else{err.textContent='Wrong password';err.style.display='block'}}
     function logout(){sessionStorage.removeItem('tbb_admin');location.reload()}
 
@@ -559,6 +559,7 @@
     document.getElementById('user-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
 
     async function confirmEmail(uid) {
+      if (!sbAdmin) { toast('Admin not initialized', true); return; }
       if (!confirm('Confirm this user\'s email? They will be able to sign in immediately.')) return;
       const { error } = await sbAdmin.auth.admin.updateUserById(uid, { email_confirm: true });
       if (error) { toast('Failed: ' + error.message, true); return; }
@@ -567,6 +568,7 @@
     }
 
     async function resendConfirmation(uid) {
+      if (!sbAdmin) { toast('Admin not initialized', true); return; }
       const u = allUsers.find(u => u.id === uid);
       if (!u?.email) { toast('No email on file', true); return; }
       const { error } = await sbAdmin.auth.admin.generateLink({ type: 'signup', email: u.email });
@@ -620,6 +622,7 @@
     }
 
     async function deleteUser(uid) {
+      if (!sbAdmin) { toast('Admin not initialized', true); return; }
       const u = allUsers.find(u => u.id === uid);
       const name = u?.business_name || 'this user';
       if (!confirm(`PERMANENTLY DELETE ${name}'s account and ALL their data? This cannot be undone.`)) return;
