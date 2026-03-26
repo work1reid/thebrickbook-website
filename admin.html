@@ -457,12 +457,8 @@
       <h1>THEBRICKBOOK</h1>
       <p>Admin Dashboard</p>
       <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="login-email" class="form-input" placeholder="admin@thebrickbook.com">
-      </div>
-      <div class="form-group">
         <label class="form-label">Password</label>
-        <input type="password" id="login-password" class="form-input" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+        <input type="password" id="login-password" class="form-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
       </div>
       <button class="login-btn" onclick="login()">Sign In</button>
       <div class="login-error" id="login-error"></div>
@@ -801,33 +797,40 @@
     let chartRevenue = null;
 
     // ─── Auth ───
-    async function checkAuth() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session) {
+    const ADMIN_HASH = 'cc92ab68d8cc7a2d543b1eb7dd026499cf85cf95a7686706cf0bf9f7105302b6';
+
+    async function hashPassword(pw) {
+      const enc = new TextEncoder().encode(pw);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function checkAuth() {
+      if (sessionStorage.getItem('tbb_admin') === 'true') {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display = 'flex';
-        document.getElementById('user-email').textContent = session.user.email;
+        document.getElementById('user-email').textContent = 'Admin';
         loadDashboard();
       }
     }
 
     async function login() {
-      const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       const errEl = document.getElementById('login-error');
       errEl.style.display = 'none';
 
-      const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) {
-        errEl.textContent = error.message;
-        errEl.style.display = 'block';
-      } else {
+      const hash = await hashPassword(password);
+      if (hash === ADMIN_HASH) {
+        sessionStorage.setItem('tbb_admin', 'true');
         checkAuth();
+      } else {
+        errEl.textContent = 'Wrong password';
+        errEl.style.display = 'block';
       }
     }
 
-    async function logout() {
-      await sb.auth.signOut();
+    function logout() {
+      sessionStorage.removeItem('tbb_admin');
       location.reload();
     }
 
