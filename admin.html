@@ -296,6 +296,7 @@
         </div>
         <div class="stats-grid" id="jobs-stats"></div>
         <div class="card"><table><thead><tr><th>Client</th><th>Type</th><th>Status</th><th>Quote</th><th>Invoice</th><th>Hours</th><th>Created</th></tr></thead><tbody id="jobs-table"></tbody></table><div class="empty-state" id="jobs-empty" style="display:none"><p>No jobs</p></div></div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:-8px">Click any row to edit. Changes save to Supabase instantly.</p>
         <div style="text-align:center;padding:12px" id="jobs-pagination"></div>
       </div>
 
@@ -339,6 +340,29 @@
   </div>
 
   <div class="modal-overlay" id="user-modal"><div class="modal"><div class="modal-header"><div class="page-title" id="modal-user-name"></div><button class="modal-close" onclick="closeModal()">&times;</button></div><div id="modal-user-content"></div></div></div>
+
+  <!-- Job Edit Modal -->
+  <div class="modal-overlay" id="job-modal">
+    <div class="modal" style="max-width:500px">
+      <div class="modal-header"><div class="page-title">Edit Job</div><button class="modal-close" onclick="closeJobModal()">&times;</button></div>
+      <div id="job-modal-content">
+        <input type="hidden" id="edit-job-id">
+        <table style="width:100%">
+          <tr><td style="font-weight:600;width:100px">Client</td><td><input class="form-input" id="edit-job-client"></td></tr>
+          <tr><td style="font-weight:600">Job Type</td><td><input class="form-input" id="edit-job-type"></td></tr>
+          <tr><td style="font-weight:600">Status</td><td><select class="form-input" id="edit-job-status"><option value="quoted">Quoted</option><option value="in_progress">In Progress</option><option value="completed">Completed</option><option value="invoiced">Invoiced</option><option value="paid">Paid</option></select></td></tr>
+          <tr><td style="font-weight:600">Quote $</td><td><input class="form-input" type="number" id="edit-job-quote" step="0.01"></td></tr>
+          <tr><td style="font-weight:600">Invoice $</td><td><input class="form-input" type="number" id="edit-job-invoice" step="0.01"></td></tr>
+          <tr><td style="font-weight:600">Notes</td><td><textarea class="form-input" id="edit-job-notes" rows="2"></textarea></td></tr>
+        </table>
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn btn-primary" onclick="saveJobEdit()">Save</button>
+          <button class="btn btn-ghost" onclick="closeJobModal()">Cancel</button>
+          <button class="btn btn-ghost" style="margin-left:auto;color:var(--red);border-color:rgba(239,68,68,.3)" onclick="deleteJobFromModal()">Delete Job</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="toast" id="toast"></div>
 
   <script>
@@ -523,21 +547,40 @@
 
         ${isBanned ? '<div style="background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:600;color:var(--red)">This user is banned</span><button class="btn btn-sm btn-ghost" onclick="unbanUser(\''+uid+'\')">Unban</button></div>' : ''}
 
-        <table style="margin-bottom:16px">
-          <tr><td style="font-weight:600;width:100px">User ID</td><td style="font-family:monospace;font-size:11px;color:var(--text-muted)">${uid}</td></tr>
-          <tr><td style="font-weight:600">ABN</td><td>${esc(u.abn)||'-'}</td></tr>
-          <tr><td style="font-weight:600">Email</td><td>${esc(u.email)||'-'}</td></tr>
-          <tr><td style="font-weight:600">Phone</td><td>${esc(u.phone)||'-'}</td></tr>
-          <tr><td style="font-weight:600">GST</td><td>${u.gst_registered?'<span class="badge green">Registered</span>':'No'}</td></tr>
-          <tr><td style="font-weight:600">Status</td><td>${isBanned?'<span class="badge red">Banned</span>':'<span class="badge green">Active</span>'}</td></tr>
-          <tr><td style="font-weight:600">Email</td><td>${emailConfirmed?'<span class="badge green">Confirmed</span>':'<span class="badge amber">Unconfirmed</span> <button class="btn btn-sm btn-primary" style="margin-left:8px" onclick="confirmEmail(\''+uid+'\')">Confirm Now</button>'}</td></tr>
-          <tr><td style="font-weight:600">Joined</td><td>${new Date(u.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</td></tr>
-          <tr><td style="font-weight:600">Last Active</td><td>${lastJob?timeAgo(lastJob.created_at):'Never'}</td></tr>
-        </table>
+        <div id="user-edit-section">
+          <div class="card-title" style="margin-bottom:12px">Profile <button class="btn btn-sm btn-ghost" style="margin-left:8px" onclick="toggleUserEdit('${uid}')">Edit</button></div>
+          <div id="user-view-fields">
+            <table style="margin-bottom:16px">
+              <tr><td style="font-weight:600;width:100px">User ID</td><td style="font-family:monospace;font-size:11px;color:var(--text-muted)">${uid}</td></tr>
+              <tr><td style="font-weight:600">Business</td><td>${esc(u.business_name)||'-'}</td></tr>
+              <tr><td style="font-weight:600">ABN</td><td>${esc(u.abn)||'-'}</td></tr>
+              <tr><td style="font-weight:600">Email</td><td>${esc(u.email)||'-'}</td></tr>
+              <tr><td style="font-weight:600">Phone</td><td>${esc(u.phone)||'-'}</td></tr>
+              <tr><td style="font-weight:600">GST</td><td>${u.gst_registered?'<span class="badge green">Registered</span>':'No'}</td></tr>
+              <tr><td style="font-weight:600">Status</td><td>${isBanned?'<span class="badge red">Banned</span>':'<span class="badge green">Active</span>'}</td></tr>
+              <tr><td style="font-weight:600">Verified</td><td>${emailConfirmed?'<span class="badge green">Confirmed</span>':'<span class="badge amber">Unconfirmed</span> <button class="btn btn-sm btn-primary" style="margin-left:8px" onclick="confirmEmail(\''+uid+'\')">Confirm Now</button>'}</td></tr>
+              <tr><td style="font-weight:600">Joined</td><td>${new Date(u.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</td></tr>
+              <tr><td style="font-weight:600">Last Active</td><td>${lastJob?timeAgo(lastJob.created_at):'Never'}</td></tr>
+            </table>
+          </div>
+          <div id="user-edit-fields" style="display:none">
+            <table style="margin-bottom:12px">
+              <tr><td style="font-weight:600;width:100px">Business</td><td><input class="form-input" id="edit-biz" value="${esc(u.business_name)||''}"></td></tr>
+              <tr><td style="font-weight:600">ABN</td><td><input class="form-input" id="edit-abn" value="${esc(u.abn)||''}"></td></tr>
+              <tr><td style="font-weight:600">Email</td><td><input class="form-input" id="edit-email" value="${esc(u.email)||''}"></td></tr>
+              <tr><td style="font-weight:600">Phone</td><td><input class="form-input" id="edit-phone" value="${esc(u.phone)||''}"></td></tr>
+              <tr><td style="font-weight:600">GST</td><td><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="edit-gst" ${u.gst_registered?'checked':''}> Registered</label></td></tr>
+            </table>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="saveUserEdit('${uid}')">Save</button>
+              <button class="btn btn-ghost" onclick="toggleUserEdit('${uid}')">Cancel</button>
+            </div>
+          </div>
+        </div>
 
-        <div class="card-title" style="margin-bottom:12px">Recent Jobs</div>
-        <table><thead><tr><th>Client</th><th>Type</th><th>Status</th><th>Amount</th></tr></thead>
-        <tbody>${jobs.slice(0,10).map(j=>`<tr><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.invoice_amount||j.quote_amount||0).toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">No jobs</td></tr>'}</tbody></table>
+        <div class="card-title" style="margin:20px 0 12px">Jobs <span style="font-size:11px;color:var(--text-muted);font-weight:400">(click to edit)</span></div>
+        <table><thead><tr><th>Client</th><th>Type</th><th>Status</th><th>Amount</th><th style="width:60px"></th></tr></thead>
+        <tbody>${jobs.slice(0,15).map(j=>`<tr class="clickable" onclick="openJobModal('${j.id}')"><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.invoice_amount||j.quote_amount||0).toLocaleString()}</td><td><button class="btn btn-sm btn-ghost" style="color:var(--red);padding:2px 6px" onclick="event.stopPropagation();deleteJob('${j.id}','${uid}')">x</button></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">No jobs</td></tr>'}</tbody></table>
 
         <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
           <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Actions</div>
@@ -557,6 +600,87 @@
     }
     function closeModal(){document.getElementById('user-modal').classList.remove('open')}
     document.getElementById('user-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+    // ─── User Edit ───
+    function toggleUserEdit(uid) {
+      const view = document.getElementById('user-view-fields');
+      const edit = document.getElementById('user-edit-fields');
+      if (edit.style.display === 'none') { edit.style.display = 'block'; view.style.display = 'none'; }
+      else { edit.style.display = 'none'; view.style.display = 'block'; }
+    }
+
+    async function saveUserEdit(uid) {
+      const updates = {
+        business_name: document.getElementById('edit-biz').value.trim(),
+        abn: document.getElementById('edit-abn').value.trim(),
+        email: document.getElementById('edit-email').value.trim(),
+        phone: document.getElementById('edit-phone').value.trim(),
+        gst_registered: document.getElementById('edit-gst').checked
+      };
+      const { error } = await sb.from('profiles').update(updates).eq('id', uid);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      const u = allUsers.find(u => u.id === uid);
+      if (u) Object.assign(u, updates);
+      toast('Profile updated');
+      openUserModal(uid);
+    }
+
+    // ─── Job Modal ───
+    function openJobModal(jobId) {
+      const j = allJobs.find(j => j.id === jobId);
+      if (!j) return;
+      document.getElementById('edit-job-id').value = jobId;
+      document.getElementById('edit-job-client').value = j.client_name || '';
+      document.getElementById('edit-job-type').value = j.job_type || '';
+      document.getElementById('edit-job-status').value = j.status || 'quoted';
+      document.getElementById('edit-job-quote').value = j.quote_amount || '';
+      document.getElementById('edit-job-invoice').value = j.invoice_amount || '';
+      document.getElementById('edit-job-notes').value = j.notes || '';
+      document.getElementById('job-modal').classList.add('open');
+    }
+
+    function closeJobModal() { document.getElementById('job-modal').classList.remove('open'); }
+    document.getElementById('job-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeJobModal(); });
+
+    async function saveJobEdit() {
+      const jobId = document.getElementById('edit-job-id').value;
+      const updates = {
+        client_name: document.getElementById('edit-job-client').value.trim(),
+        job_type: document.getElementById('edit-job-type').value.trim(),
+        status: document.getElementById('edit-job-status').value,
+        quote_amount: parseFloat(document.getElementById('edit-job-quote').value) || 0,
+        invoice_amount: parseFloat(document.getElementById('edit-job-invoice').value) || null,
+        notes: document.getElementById('edit-job-notes').value.trim()
+      };
+      const { error } = await sb.from('jobs').update(updates).eq('id', jobId);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      const j = allJobs.find(j => j.id === jobId);
+      if (j) Object.assign(j, updates);
+      toast('Job updated');
+      closeJobModal();
+      loadJobs();
+    }
+
+    async function deleteJobFromModal() {
+      const jobId = document.getElementById('edit-job-id').value;
+      if (!confirm('Delete this job permanently?')) return;
+      const { error } = await sb.from('jobs').delete().eq('id', jobId);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      allJobs = allJobs.filter(j => j.id !== jobId);
+      toast('Job deleted');
+      closeJobModal();
+      loadJobs();
+    }
+
+    async function deleteJob(jobId, uid) {
+      if (!confirm('Delete this job?')) return;
+      const { error } = await sb.from('jobs').delete().eq('id', jobId);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      allJobs = allJobs.filter(j => j.id !== jobId);
+      toast('Job deleted');
+      if (uid) openUserModal(uid);
+      else loadJobs();
+    }
 
     async function confirmEmail(uid) {
       if (!sbAdmin) { toast('Admin not initialized', true); return; }
@@ -675,8 +799,23 @@
         const{data,error}=await sb.from('feedback').select('*').order('created_at',{ascending:false});
         if(error)return;
         if(!data||!data.length){document.getElementById('feedback-content').innerHTML='<div class="empty-state"><p>No feedback yet. Your users will speak — make sure you\'re listening.</p></div>';return}
-        document.getElementById('feedback-content').innerHTML=`<table><thead><tr><th>Message</th><th>Status</th><th>Date</th></tr></thead><tbody>${data.map(f=>`<tr><td style="color:var(--text)">${esc(f.message||f.text)}</td><td><span class="badge ${f.status==='reviewed'?'green':'amber'}">${f.status||'new'}</span></td><td>${timeAgo(f.created_at)}</td></tr>`).join('')}</tbody></table>`;
+        document.getElementById('feedback-content').innerHTML=`<table><thead><tr><th>Message</th><th>Status</th><th>Date</th><th style="width:120px">Actions</th></tr></thead><tbody>${data.map(f=>`<tr><td style="color:var(--text)">${esc(f.message||f.text)}</td><td><span class="badge ${f.status==='reviewed'?'green':'amber'}">${f.status||'new'}</span></td><td>${timeAgo(f.created_at)}</td><td><div style="display:flex;gap:4px">${f.status!=='reviewed'?`<button class="btn btn-sm btn-ghost" onclick="markFeedback('${f.id}','reviewed')">Review</button>`:`<button class="btn btn-sm btn-ghost" onclick="markFeedback('${f.id}','new')">Reopen</button>`}<button class="btn btn-sm btn-ghost" style="color:var(--red)" onclick="deleteFeedback('${f.id}')">Del</button></div></td></tr>`).join('')}</tbody></table>`;
       }catch(e){/* table doesn't exist yet, that's fine */}
+    }
+
+    async function markFeedback(id, status) {
+      const { error } = await sb.from('feedback').update({ status }).eq('id', id);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      toast('Feedback ' + status);
+      loadFeedback();
+    }
+
+    async function deleteFeedback(id) {
+      if (!confirm('Delete this feedback?')) return;
+      const { error } = await sb.from('feedback').delete().eq('id', id);
+      if (error) { toast('Failed: ' + error.message, true); return; }
+      toast('Deleted');
+      loadFeedback();
     }
 
     // ─── JOBS ───
@@ -694,7 +833,7 @@
       if(!source.length){el.innerHTML='';em.style.display='block';document.getElementById('jobs-pagination').innerHTML='';return}em.style.display='none';
       const bm={quoted:'blue',in_progress:'orange',completed:'green',invoiced:'purple',paid:'green'};const lm={quoted:'Quoted',in_progress:'In Progress',completed:'Completed',invoiced:'Invoiced',paid:'Paid'};
       const start=jobsPage*jobsPerPage;const page=source.slice(start,start+jobsPerPage);const tp=Math.ceil(source.length/jobsPerPage);
-      el.innerHTML=page.map(j=>`<tr><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.quote_amount||0).toLocaleString()}</td><td>${j.invoice_amount?'$'+Number(j.invoice_amount).toLocaleString():'-'}</td><td>${j.timer_seconds?(j.timer_seconds/3600).toFixed(1)+'h':'-'}</td><td>${timeAgo(j.created_at)}</td></tr>`).join('');
+      el.innerHTML=page.map(j=>`<tr class="clickable" onclick="openJobModal('${j.id}')"><td style="font-weight:600;color:var(--text)">${esc(j.client_name)}</td><td>${esc(j.job_type)}</td><td><span class="badge ${bm[j.status]||''}">${lm[j.status]||j.status}</span></td><td>$${Number(j.quote_amount||0).toLocaleString()}</td><td>${j.invoice_amount?'$'+Number(j.invoice_amount).toLocaleString():'-'}</td><td>${j.timer_seconds?(j.timer_seconds/3600).toFixed(1)+'h':'-'}</td><td>${timeAgo(j.created_at)}</td></tr>`).join('');
       document.getElementById('jobs-pagination').innerHTML=tp>1?`<button class="btn btn-sm btn-ghost" ${jobsPage===0?'disabled style="opacity:.3"':''} onclick="jobsPage--;renderJobsPage()">Prev</button><span style="margin:0 12px;font-size:12px;color:var(--text-muted)">Page ${jobsPage+1} of ${tp}</span><button class="btn btn-sm btn-ghost" ${jobsPage>=tp-1?'disabled style="opacity:.3"':''} onclick="jobsPage++;renderJobsPage()">Next</button>`:'';
     }
     function filterJobs(q){q=q.toLowerCase();jobsPage=0;renderJobsPage(allJobs.filter(j=>j.client_name.toLowerCase().includes(q)||j.job_type.toLowerCase().includes(q)))}
