@@ -193,6 +193,7 @@
 
       <div class="nav-section" onclick="toggleGroup(this)">Platform <span class="chev">▾</span></div>
       <div class="nav-group">
+        <button class="nav-item" data-page="push"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Push Notifications<span class="ndot"></span></button>
         <button class="nav-item" data-page="devnotes"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Dev Notes<span class="ndot"></span></button>
         <button class="nav-item" data-page="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings<span class="ndot"></span></button>
       </div>
@@ -211,13 +212,31 @@
           <button class="btn btn-ghost" onclick="loadDashboard()">Refresh</button>
         </div>
 
-        <!-- App Store Banner -->
-        <div class="appstore-banner">
-          <div class="ab-text"><strong>App Store:</strong> Check reviews and ratings</div>
-          <div style="display:flex;gap:8px;">
-            <a href="https://appstoreconnect.apple.com" target="_blank" class="btn btn-ghost">App Store Connect</a>
-            <a href="https://apps.apple.com/app/thebrickbook" target="_blank" class="btn btn-primary" style="font-size:12px">View on App Store</a>
+        <!-- App Store Section -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header">
+            <div class="card-title">App Store</div>
+            <div style="display:flex;gap:8px;">
+              <a href="https://appstoreconnect.apple.com" target="_blank" class="btn btn-sm btn-ghost">App Store Connect</a>
+              <a href="https://apps.apple.com/au/app/thebrickbook/id6760827213" target="_blank" class="btn btn-sm btn-primary">View on App Store</a>
+            </div>
           </div>
+          <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:0" id="appstore-stats">
+            <div class="stat-card"><div><div class="stat-label">Rating</div><div class="stat-value" id="as-rating"><span class="spinner"></span></div></div></div>
+            <div class="stat-card"><div><div class="stat-label">Reviews</div><div class="stat-value" id="as-reviews"><span class="spinner"></span></div></div></div>
+            <div class="stat-card"><div><div class="stat-label">Version</div><div class="stat-value" id="as-version"><span class="spinner"></span></div></div></div>
+            <div class="stat-card"><div><div class="stat-label">Price</div><div class="stat-value" id="as-price"><span class="spinner"></span></div></div></div>
+            <div class="stat-card"><div><div class="stat-label">Status</div><div class="stat-value" id="as-status"><span class="spinner"></span></div></div></div>
+          </div>
+        </div>
+
+        <!-- App Store Reviews -->
+        <div class="card" style="margin-bottom:20px" id="reviews-card" style="display:none">
+          <div class="card-header">
+            <div class="card-title">App Store Reviews</div>
+            <span style="font-size:11px;color:var(--text-muted)" id="reviews-count"></span>
+          </div>
+          <div id="reviews-list"></div>
         </div>
 
         <!-- Key Stats -->
@@ -336,6 +355,60 @@
         <div class="card"><div class="card-header"><div class="card-title">Database Tables</div></div><div id="db-tables"></div></div>
         <div class="card"><div class="card-header"><div class="card-title">Quick Actions</div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost" onclick="window.open('https://supabase.com/dashboard','_blank')">Supabase</button><button class="btn btn-ghost" onclick="window.open('https://analytics.google.com','_blank')">Analytics</button><button class="btn btn-ghost" onclick="window.open('https://search.google.com/search-console','_blank')">Search Console</button><button class="btn btn-ghost" onclick="window.open('https://appstoreconnect.apple.com','_blank')">App Store Connect</button></div></div>
       </div>
+
+      <!-- Push Notifications Page -->
+      <div id="page-push" class="page">
+        <div class="page-header"><div><div class="page-title">Push Notifications</div><div class="page-subtitle" id="push-subtitle">Send notifications to app users</div></div></div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title">APNs Configuration</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div><label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Key ID</label>
+            <input type="text" id="apns-key-id" class="form-input" placeholder="e.g. ABC123DEFG"></div>
+            <div><label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Team ID</label>
+            <input type="text" id="apns-team-id" class="form-input" value="LHN7U9Z5N2"></div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Bundle ID</label>
+            <input type="text" id="apns-bundle-id" class="form-input" value="com.thebrickbook.app">
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">.p8 Auth Key (paste full contents)</label>
+            <textarea id="apns-p8-key" class="form-input" rows="4" style="font-family:monospace;font-size:11px" placeholder="-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----"></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="saveApnsConfig()">Save Config</button>
+          <span id="apns-config-status" style="margin-left:12px;font-size:12px;color:var(--green)"></span>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title">Send Notification</div></div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Target</label>
+            <select id="push-target" class="form-input"><option value="all">All Users</option></select>
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Title</label>
+            <input type="text" id="push-title" class="form-input" placeholder="e.g. New Feature Available">
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;display:block">Body</label>
+            <textarea id="push-body" class="form-input" rows="3" placeholder="e.g. Check out the new invoice templates!"></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="sendPushNotification()" id="push-send-btn">Send Notification</button>
+          <div id="push-result" style="margin-top:12px;font-size:12px"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Registered Devices</div></div>
+          <div id="push-devices"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-header"><div class="card-title">Send History</div></div>
+          <div id="push-history"></div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -369,7 +442,7 @@
     const SUPABASE_URL='https://lrqkcgubmmvpxyjuhugc.supabase.co';
     const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzkxNDAsImV4cCI6MjA4OTUxNTE0MH0.yGnd-oQMeXWt3ebtLHHSpYwbsmaMFulW4gs1_XOEeuI';
     const SERVICE_ROLE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxycWtjZ3VibW12cHh5anVodWdjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzkzOTE0MCwiZXhwIjoyMDg5NTE1MTQwfQ.R0BgwNyrpJah992y20nREKmEPWcZ5-awvXXdC8y-8RM';
-    const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    let sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
     let sbAdmin=null;
     const ADMIN_SALT='tbb_admin_2026_salt';
     const ADMIN_KEY='a9e77e5f898583a1ac531c369f3789fde72496e3ed378c077222e8690555771a';
@@ -382,7 +455,7 @@
 
     // Auth
     async function deriveKey(pw){const enc=new TextEncoder();const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(ADMIN_SALT),iterations:100000,hash:'SHA-256'},km,256);return Array.from(new Uint8Array(bits)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-    function checkAuth(){if(sessionStorage.getItem('tbb_admin')==='true'){sbAdmin=supabase.createClient(SUPABASE_URL,SERVICE_ROLE_KEY);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='flex';loadDashboard()}}
+    function checkAuth(){if(sessionStorage.getItem('tbb_admin')==='true'){sbAdmin=supabase.createClient(SUPABASE_URL,SERVICE_ROLE_KEY);sb=sbAdmin;document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='flex';loadDashboard()}}
     async function login(){const pw=document.getElementById('login-password').value;const err=document.getElementById('login-error');err.style.display='none';if(await deriveKey(pw)===ADMIN_KEY){sessionStorage.setItem('tbb_admin','true');checkAuth()}else{err.textContent='Wrong password';err.style.display='block'}}
     function logout(){sessionStorage.removeItem('tbb_admin');location.reload()}
 
@@ -391,7 +464,7 @@
     function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open')}
     document.querySelectorAll('.nav-item[data-page]').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));btn.classList.add('active');document.getElementById('page-'+btn.dataset.page).classList.add('active');if(window.innerWidth<=780)toggleSidebar();loaders[btn.dataset.page]?.()})});
     function navTo(p){document.querySelector(`.nav-item[data-page="${p}"]`)?.click()}
-    const loaders={dashboard:loadDashboard,users:loadUsers,jobs:loadJobs,feedback:loadFeedback,health:loadHealth,devnotes:loadNotes,settings:loadSettings};
+    const loaders={dashboard:loadDashboard,users:loadUsers,jobs:loadJobs,feedback:loadFeedback,health:loadHealth,devnotes:loadNotes,settings:loadSettings,push:loadPush};
 
     // ─── DASHBOARD ───
     async function loadDashboard(){
@@ -501,6 +574,88 @@
         const rev=allJobs.filter(j=>j.user_id===uid&&j.status==='paid').reduce((s,j)=>s+Number(j.invoice_amount||0),0);
         return`<div class="user-row" style="cursor:pointer" onclick="openUserModal('${uid}')"><div class="rank ${rc}">${i+1}</div><div class="avatar" style="background:${cols[i%5]}18;color:${cols[i%5]}">${init}</div><div class="user-info"><div class="user-name">${esc(u.business_name)||'Unknown'}</div><div class="user-meta">${cnt} jobs &middot; $${rev.toLocaleString()} paid</div></div></div>`;
       }).join('')||'<div class="empty-state"><p>No data yet</p></div>';
+
+      // Load App Store data
+      loadAppStoreData();
+    }
+
+    // ─── APP STORE DATA ───
+    const APP_STORE_ID = '6760827213';
+
+    async function loadAppStoreData() {
+      try {
+        // Fetch app info from iTunes API
+        const res = await fetch(`https://itunes.apple.com/lookup?id=${APP_STORE_ID}&country=au`);
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          const app = data.results[0];
+          const rating = app.averageUserRating ? app.averageUserRating.toFixed(1) : 'N/A';
+          const ratingCount = app.userRatingCount || 0;
+          const version = app.version || '-';
+          const price = app.price === 0 ? 'Free' : '$' + app.price;
+
+          document.getElementById('as-rating').innerHTML = rating !== 'N/A'
+            ? `<span style="color:var(--amber)">${rating} ★</span>`
+            : '<span style="color:var(--text-muted)">No ratings</span>';
+          document.getElementById('as-reviews').textContent = ratingCount;
+          document.getElementById('as-version').textContent = 'v' + version;
+          document.getElementById('as-price').innerHTML = `<span style="color:var(--green)">${price}</span>`;
+          document.getElementById('as-status').innerHTML = '<span style="color:var(--green)">Live</span>';
+        } else {
+          document.getElementById('as-rating').textContent = '-';
+          document.getElementById('as-reviews').textContent = '-';
+          document.getElementById('as-version').textContent = '-';
+          document.getElementById('as-price').textContent = '-';
+          document.getElementById('as-status').innerHTML = '<span style="color:var(--amber)">Not found</span>';
+        }
+      } catch (e) {
+        console.error('App Store fetch error:', e);
+        document.getElementById('as-status').innerHTML = '<span style="color:var(--red)">Error</span>';
+      }
+
+      // Fetch reviews from RSS feed
+      try {
+        const reviewRes = await fetch(`https://itunes.apple.com/au/rss/customerreviews/id=${APP_STORE_ID}/sortBy=mostRecent/json`);
+        const reviewData = await reviewRes.json();
+        const entries = reviewData?.feed?.entry;
+
+        if (entries && entries.length > 1) {
+          // First entry is metadata, rest are reviews
+          const reviews = entries.slice(1);
+          document.getElementById('reviews-count').textContent = reviews.length + ' reviews';
+          document.getElementById('reviews-card').style.display = 'block';
+
+          document.getElementById('reviews-list').innerHTML = reviews.map(r => {
+            const stars = parseInt(r['im:rating']?.label) || 0;
+            const title = esc(r.title?.label || '');
+            const content = esc(r.content?.label || '');
+            const author = esc(r.author?.name?.label || 'Anonymous');
+            const date = r.updated?.label ? new Date(r.updated.label).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+            const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+            const starColor = stars >= 4 ? 'var(--amber)' : stars >= 3 ? 'var(--text-secondary)' : 'var(--red)';
+
+            return `<div style="padding:14px 0;border-bottom:1px solid var(--border)">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                <div>
+                  <span style="color:${starColor};font-size:14px;letter-spacing:1px">${starStr}</span>
+                  <strong style="margin-left:10px;font-size:14px">${title}</strong>
+                </div>
+                <span style="font-size:11px;color:var(--text-muted)">${date}</span>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:4px">${content}</p>
+              <span style="font-size:11px;color:var(--text-muted)">by ${author}</span>
+            </div>`;
+          }).join('');
+        } else {
+          document.getElementById('reviews-count').textContent = '0 reviews';
+          document.getElementById('reviews-list').innerHTML = '<div class="empty-state"><p>No reviews yet. Ask your first users to leave one!</p></div>';
+          document.getElementById('reviews-card').style.display = 'block';
+        }
+      } catch (e) {
+        console.error('Reviews fetch error:', e);
+        document.getElementById('reviews-list').innerHTML = '<div class="empty-state"><p>Could not load reviews</p></div>';
+        document.getElementById('reviews-card').style.display = 'block';
+      }
     }
 
     function renderLineChart(id,data,field,color,badgeId,days){
@@ -903,6 +1058,108 @@
       else if(type==='jobs'){headers=['Client','Job Type','Status','Quote','Invoice','Hours','Created'];rows=allJobs.map(j=>[j.client_name,j.job_type,j.status,j.quote_amount,j.invoice_amount,j.timer_seconds?(j.timer_seconds/3600).toFixed(1):'',j.created_at])}
       const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
       const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`tbb_${type}_${new Date().toISOString().split('T')[0]}.csv`;a.click();URL.revokeObjectURL(url);toast(`${type} exported`);
+    }
+
+    // ─── PUSH NOTIFICATIONS ───
+
+    function saveApnsConfig(){
+      const config={keyId:document.getElementById('apns-key-id').value.trim(),teamId:document.getElementById('apns-team-id').value.trim(),bundleId:document.getElementById('apns-bundle-id').value.trim(),p8Key:document.getElementById('apns-p8-key').value.trim()};
+      localStorage.setItem('tbb_apns_config',JSON.stringify(config));
+      document.getElementById('apns-config-status').textContent='Saved!';
+      setTimeout(()=>document.getElementById('apns-config-status').textContent='',2000);
+    }
+
+    function loadApnsConfig(){
+      const raw=localStorage.getItem('tbb_apns_config');
+      if(!raw)return null;
+      try{const c=JSON.parse(raw);document.getElementById('apns-key-id').value=c.keyId||'';document.getElementById('apns-team-id').value=c.teamId||'LHN7U9Z5N2';document.getElementById('apns-bundle-id').value=c.bundleId||'com.thebrickbook.app';document.getElementById('apns-p8-key').value=c.p8Key||'';return c}catch{return null}
+    }
+
+    async function loadPush(){
+      loadApnsConfig();
+      if(!allUsers.length){const{data}=await sb.from('profiles').select('*');allUsers=data||[]}
+      const sel=document.getElementById('push-target');
+      sel.innerHTML='<option value="all">All Users ('+allUsers.length+')</option>'+allUsers.map(u=>'<option value="'+u.id+'">'+esc(u.business_name||u.id.slice(0,8))+'</option>').join('');
+
+      // Load device tokens
+      try{
+        const{data:tokens}=await sb.from('device_tokens').select('*');
+        if(tokens&&tokens.length){
+          const userMap=Object.fromEntries(allUsers.map(u=>[u.id,u.business_name||u.id.slice(0,8)]));
+          document.getElementById('push-devices').innerHTML='<table><thead><tr><th>User</th><th>Token (last 8)</th><th>Updated</th></tr></thead><tbody>'+tokens.map(t=>'<tr><td>'+esc(userMap[t.user_id]||t.user_id.slice(0,8))+'</td><td style="font-family:monospace;font-size:11px">...'+t.token.slice(-8)+'</td><td>'+timeAgo(t.updated_at)+'</td></tr>').join('')+'</tbody></table>';
+          document.getElementById('push-subtitle').textContent=tokens.length+' device(s) registered';
+        }else{
+          document.getElementById('push-devices').innerHTML='<div class="empty-state"><p>No devices registered yet. Users need to open the app and allow notifications.</p></div>';
+        }
+      }catch{document.getElementById('push-devices').innerHTML='<div class="empty-state"><p>Could not load devices</p></div>'}
+
+      // Load history
+      try{
+        const{data}=await sb.from('push_notifications_log').select('*').order('created_at',{ascending:false}).limit(20);
+        if(data&&data.length){
+          document.getElementById('push-history').innerHTML='<table><thead><tr><th>Title</th><th>Body</th><th>Target</th><th>Sent</th><th>Date</th></tr></thead><tbody>'+data.map(n=>'<tr><td style="font-weight:600">'+esc(n.title)+'</td><td>'+esc(n.body)+'</td><td>'+(n.sent_to_all?'All':'Targeted')+'</td><td>'+n.sent_count+'</td><td>'+timeAgo(n.created_at)+'</td></tr>').join('')+'</tbody></table>';
+        }else{document.getElementById('push-history').innerHTML='<div class="empty-state"><p>No notifications sent yet</p></div>'}
+      }catch{document.getElementById('push-history').innerHTML='<div class="empty-state"><p>Create push_notifications_log table first</p></div>'}
+    }
+
+    function b64url(buf){const bytes=buf instanceof Uint8Array?buf:new Uint8Array(buf);let binary='';bytes.forEach(b=>binary+=String.fromCharCode(b));return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+
+    async function importP8Key(p8Pem){
+      const pemBody=p8Pem.replace('-----BEGIN PRIVATE KEY-----','').replace('-----END PRIVATE KEY-----','').replace(/\s/g,'');
+      const der=Uint8Array.from(atob(pemBody),c=>c.charCodeAt(0));
+      return crypto.subtle.importKey('pkcs8',der,{name:'ECDSA',namedCurve:'P-256'},false,['sign']);
+    }
+
+    async function createApnsJwt(keyId,teamId,p8Key){
+      const key=await importP8Key(p8Key);
+      const header=b64url(new TextEncoder().encode(JSON.stringify({alg:'ES256',kid:keyId})));
+      const now=Math.floor(Date.now()/1000);
+      const claims=b64url(new TextEncoder().encode(JSON.stringify({iss:teamId,iat:now})));
+      const signingInput=header+'.'+claims;
+      const signature=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},key,new TextEncoder().encode(signingInput));
+      return signingInput+'.'+b64url(signature);
+    }
+
+    async function sendPushNotification(){
+      const configRaw=localStorage.getItem('tbb_apns_config');
+      if(!configRaw){toast('Configure APNs settings first',true);return}
+      const config=JSON.parse(configRaw);
+      if(!config.keyId||!config.p8Key){toast('Missing Key ID or .p8 key',true);return}
+
+      const title=document.getElementById('push-title').value.trim();
+      const body=document.getElementById('push-body').value.trim();
+      if(!title||!body){toast('Title and body are required',true);return}
+
+      const target=document.getElementById('push-target').value;
+      const resultEl=document.getElementById('push-result');
+      resultEl.innerHTML='<span style="color:var(--amber)">Fetching tokens...</span>';
+
+      let query=sb.from('device_tokens').select('*');
+      if(target!=='all')query=query.eq('user_id',target);
+      const{data:tokens,error}=await query;
+      if(error||!tokens||!tokens.length){resultEl.innerHTML='<span style="color:var(--red)">No device tokens found</span>';return}
+
+      resultEl.innerHTML='<span style="color:var(--amber)">Signing JWT & sending to '+tokens.length+' device(s)...</span>';
+
+      try{
+        const tokenStrings=tokens.map(t=>t.token);
+        const res=await fetch('https://lrqkcgubmmvpxyjuhugc.supabase.co/functions/v1/send-push',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON_KEY},
+          body:JSON.stringify({tokens:tokenStrings,title,body,keyId:config.keyId,teamId:config.teamId,p8Key:config.p8Key,bundleId:config.bundleId})
+        });
+        const result=await res.json();
+        if(result.error){resultEl.innerHTML='<span style="color:var(--red)">Error: '+esc(result.error)+'</span>';return}
+
+        await sb.from('push_notifications_log').insert({title,body,target_user_ids:target==='all'?[]:[target],sent_to_all:target==='all',sent_count:result.success||0});
+
+        resultEl.innerHTML='<span style="color:var(--green)">'+(result.success||0)+' sent</span>'+(result.failed?' <span style="color:var(--red)">'+result.failed+' failed</span>':'');
+        if(result.errors&&result.errors.length)resultEl.innerHTML+='<pre style="background:var(--bg-input);padding:8px;border-radius:6px;margin-top:8px;font-size:10px;color:var(--text-muted)">'+result.errors.join('\n')+'</pre>';
+        toast('Notification sent to '+(result.success||0)+' device(s)');
+        document.getElementById('push-title').value='';
+        document.getElementById('push-body').value='';
+        loadPush();
+      }catch(e){resultEl.innerHTML='<span style="color:var(--red)">Error: '+esc(e.message)+'</span>'}
     }
 
     checkAuth();
